@@ -27,8 +27,7 @@ public class Address {
     @Column(nullable = false)
     private String street;
 
-
-
+    
     @OneToOne(mappedBy = "address", optional = false)
     private Hotel hotel;
 }
