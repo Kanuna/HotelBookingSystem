@@ -1,10 +1,10 @@
 package com.boje.hotelbooking.dtoRequest;
 
-import com.boje.hotelbooking.dto.ReviewDTO;
+import com.boje.hotelbooking.dto.ContactInfoHotelDTO;
 import lombok.Getter;
 
 @Getter
-public class ReviewDTORequest extends ReviewDTO {
+public class ContactInfoHotelDTORequest extends ContactInfoHotelDTO {
     private int id;
 
     public void setId(int id) {

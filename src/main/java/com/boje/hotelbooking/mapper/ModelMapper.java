@@ -38,5 +38,5 @@ public interface ModelMapper {
 
     User toUser(UserDTORequest userDTORequest);
     UserDTO toUserDTO(User user);
-    UserDTORequest toUserDTORequest(UserDTORequest userDTORequest);
+    UserDTORequest toUserDTORequest(User user);
 }

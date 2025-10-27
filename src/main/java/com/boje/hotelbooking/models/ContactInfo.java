@@ -17,5 +17,8 @@ public class ContactInfo {
     private String email;
 
     @Column(nullable = false)
-    private String phone;
+    private String phoneNumber;
+
+    @OneToOne(mappedBy = "contactInfo")
+    private User user;
 }

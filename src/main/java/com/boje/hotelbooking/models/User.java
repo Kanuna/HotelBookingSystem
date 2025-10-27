@@ -26,10 +26,6 @@ public class User {
     private String password;
 
 
-    @OneToOne(cascade =  CascadeType.ALL, optional = false, orphanRemoval = true)
-    @JoinColumn(name = "address_id", nullable = false)
-    private Address address;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings;
 

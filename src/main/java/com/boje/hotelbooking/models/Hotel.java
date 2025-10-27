@@ -39,6 +39,7 @@ public class Hotel {
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
+    //Change to ContactInfoHotel
     @ManyToOne(cascade =  CascadeType.ALL, optional = false)
     @JoinColumn(name = "contactInfo_id", nullable = false)
     private ContactInfo contactInfo;
