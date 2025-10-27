@@ -15,6 +15,5 @@ public class UserDTO {
     private String password;
 
     private List<Integer> bookings_ids;
-    private int address_id;
     private int contactInfo_id;
 }
