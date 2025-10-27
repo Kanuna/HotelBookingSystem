@@ -1,5 +1,6 @@
 package com.boje.hotelbooking.serviceImp;
 
+import com.boje.hotelbooking.ResourceNotFoundException.ResourceNotFoundException;
 import com.boje.hotelbooking.dto.UserDTO;
 import com.boje.hotelbooking.dtoRequest.UserDTORequest;
 import com.boje.hotelbooking.mapper.ModelMapper;
@@ -31,7 +32,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDTORequest updateUser(UserDTORequest userDTORequest) {
-
+        return null;
     }
 
     @Override

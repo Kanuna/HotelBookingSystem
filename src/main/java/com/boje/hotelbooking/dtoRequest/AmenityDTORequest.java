@@ -1,9 +1,10 @@
 package com.boje.hotelbooking.dtoRequest;
 
+import com.boje.hotelbooking.dto.AmenityDTO;
 import lombok.Getter;
 
 @Getter
-public class AmenityDTORequest {
+public class AmenityDTORequest extends AmenityDTO {
     private int id;
 
     public void setId(int id) {
