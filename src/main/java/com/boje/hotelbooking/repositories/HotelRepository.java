@@ -1,5 +1,6 @@
 package com.boje.hotelbooking.repositories;
 
+import com.boje.hotelbooking.dto.AmenityDTO;
 import com.boje.hotelbooking.models.Amenity;
 import com.boje.hotelbooking.models.Hotel;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +17,5 @@ public interface HotelRepository extends JpaRepository<Hotel,Integer> {
 
     Optional<List<Hotel>> findByFranchise(String franchise);
     Optional<List<Hotel>> findByAmenities(List<Amenity> amenities);
+    Optional<Hotel> findByName(String hotelName);
 }

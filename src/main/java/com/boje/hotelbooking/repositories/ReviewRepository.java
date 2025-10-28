@@ -9,6 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review,Integer> {
-    Optional<List<Review>> findReviewByHotel(Hotel hotel);
-    Optional<List<Review>> findReviewByHotelAndRating(Hotel hotel, double starRating);
+    Optional<List<Review>> findReviewByHotelId(int hotel_id);
+    Optional<List<Review>> findReviewByHotelIdAndRating(int hotel_id, double starRating);
+
+    Hotel hotel(Hotel hotel);
 }

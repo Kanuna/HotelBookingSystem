@@ -1,4 +1,5 @@
 package com.boje.hotelbooking.dto;
+import com.boje.hotelbooking.models.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -11,4 +12,6 @@ public class ContactInfoDTO {
     private String email;
     @NotBlank(message = "Phone number can't be blank")
     private String phone;
+
+    private User user;
 }
