@@ -39,10 +39,12 @@ public class Hotel {
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
-    //Change to ContactInfoHotel
-    @ManyToOne(cascade =  CascadeType.ALL, optional = false)
-    @JoinColumn(name = "contactInfo_id", nullable = false)
-    private ContactInfo contactInfo;
+    @OneToOne(cascade =  CascadeType.ALL, optional = false)
+    @JoinColumn(name = "contactInfoHotel_id", nullable = false)
+    private ContactInfoHotel contactInfoHotel;
+
+    @OneToMany(cascade =  CascadeType.ALL)
+    private List<Manager> managers;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<Review> reviews = new ArrayList<>();

@@ -29,8 +29,9 @@ public class Manager {
     private String phoneNumber;
 
 
-    @OneToMany(mappedBy = "managers")
-    private List<Hotel> hotel;
+    @ManyToOne
+    @JoinColumn(name = "hotel_id", nullable = false)
+    private Hotel hotel;
 
     @ManyToOne
     @JoinColumn(name = "contact_info_hotel_id", nullable = false)

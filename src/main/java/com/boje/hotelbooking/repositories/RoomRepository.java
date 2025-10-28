@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room,Integer> {
-    Optional<List<Room>> findByHotel(Hotel hotel);
-    Optional<List<Room>> findByHotelAndOccupied(Hotel hotel, Room.Occupied occupied);
+    Optional<List<Room>> findByHotelId(int hotel_id);
+    Optional<List<Room>> findByHotelIdAndOccupied(int hotel_id, Room.Occupied occupied);
 }

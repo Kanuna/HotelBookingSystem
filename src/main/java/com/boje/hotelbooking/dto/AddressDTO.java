@@ -1,6 +1,7 @@
 package com.boje.hotelbooking.dto;
 
 
+import com.boje.hotelbooking.models.Hotel;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,4 +17,6 @@ public class AddressDTO {
     private String city;
     @NotBlank(message = "Street can't be blank.")
     private String street;
+
+    private Hotel hotel;
 }

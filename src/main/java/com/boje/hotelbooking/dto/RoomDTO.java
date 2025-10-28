@@ -1,6 +1,7 @@
 package com.boje.hotelbooking.dto;
 
-
+import com.boje.hotelbooking.models.Booking;
+import com.boje.hotelbooking.models.Hotel;
 import com.boje.hotelbooking.models.Room;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +23,7 @@ public class RoomDTO {
     private Room.Occupied occupied;
 
     @NotNull(message = "Room must belong to a hotel.")
-    private int hotel_id;
-    private List<Integer> booking_ids;
+    private Hotel hotel;
+    private List<Booking> bookings;
+
 }

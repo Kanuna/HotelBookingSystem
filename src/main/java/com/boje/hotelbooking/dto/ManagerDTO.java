@@ -1,9 +1,9 @@
 package com.boje.hotelbooking.dto;
 
+import com.boje.hotelbooking.models.ContactInfoHotel;
+import com.boje.hotelbooking.models.Hotel;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -11,6 +11,6 @@ public class ManagerDTO {
     private String fullName;
     private String email;
     private String phoneNumber;
-    List<HotelDTO> hotels;
-    private ContactInfoHotelDTO contactInfoHotelDTO;
+    Hotel hotel;
+    private ContactInfoHotel contactInfoHotel;
 }
