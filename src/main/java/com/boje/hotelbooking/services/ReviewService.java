@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface ReviewService {
     ReviewDTORequest createReview(ReviewDTORequest reviewDTORequest);
-    ReviewDTORequest updateReview(ReviewDTORequest reviewDTORequest);
-    boolean deleteReview(int review_id);
+    ReviewDTORequest updateReview(int review_id, ReviewDTO reviewDTO);
+    void deleteReview(int review_id);
 
     List<ReviewDTO> findByHotelId(int hotel_id);
     List<ReviewDTO> findByHotelIdAndRating(int hotel_id, double starRating);

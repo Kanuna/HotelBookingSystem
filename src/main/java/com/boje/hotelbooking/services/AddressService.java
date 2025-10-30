@@ -5,7 +5,7 @@ import com.boje.hotelbooking.dtoRequest.AddressDTORequest;
 
 public interface AddressService {
     AddressDTORequest createAddress(int hotel_id, AddressDTORequest addressDTORequest);
-    AddressDTORequest updateAddress(AddressDTORequest addressDTORequest);
-    boolean deleteAddress(int address_id);
-     AddressDTO findAddressByHotelId(int hotel_id);
+    AddressDTORequest updateAddress(int address_id, AddressDTO addressDTO);
+    void deleteAddress(int address_id);
+    AddressDTO findAddressByHotelId(int hotel_id);
 }

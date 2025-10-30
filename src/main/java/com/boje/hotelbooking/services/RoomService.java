@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface RoomService {
     RoomDTORequest createRoom(RoomDTORequest roomDTORequest);
-    RoomDTORequest updateRoom(RoomDTORequest roomDTORequest);
-    boolean deleteRoom(int room_id);
+    RoomDTORequest updateRoom(int room_id, RoomDTO roomDTO);
+    void deleteRoom(int room_id);
 
     List<RoomDTO> findByHotelId(int  hotel_id);
     List<RoomDTO> findByHotelIdAndOccupied(int hotel_id, Room.Occupied occupied);

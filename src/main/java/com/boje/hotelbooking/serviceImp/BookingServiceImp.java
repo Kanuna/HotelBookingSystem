@@ -31,15 +31,15 @@ public class BookingServiceImp implements BookingService {
     }
 
     @Override
-    public BookingDTORequest updateBooking(BookingDTORequest bookingDTORequest) {
-        Booking booking = bookingRepository.findById(bookingDTORequest.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: "  + bookingDTORequest.getId()));
+    public BookingDTORequest updateBooking(int booking_id, BookingDTO bookingDTO) {
+        Booking booking = bookingRepository.findById(booking_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: "  + booking_id));
 
-        booking.setUpdatedAt(bookingDTORequest.getUpdatedAt());
-        booking.setRoom(bookingDTORequest.getRoom());
-        booking.setUser(bookingDTORequest.getUser());
-        booking.setStartDate(bookingDTORequest.getStartDate());
-        booking.setEndDate(bookingDTORequest.getEndDate());
+        booking.setUpdatedAt(bookingDTO.getUpdatedAt());
+        booking.setRoom(bookingDTO.getRoom());
+        booking.setUser(bookingDTO.getUser());
+        booking.setStartDate(bookingDTO.getStartDate());
+        booking.setEndDate(bookingDTO.getEndDate());
 
         Booking savedBooking = bookingRepository.save(booking);
 
@@ -47,19 +47,16 @@ public class BookingServiceImp implements BookingService {
     }
 
     @Override
-    public boolean deleteBooking(int booking_id) {
+    public void deleteBooking(int booking_id) {
+        if (!bookingRepository.existsById(booking_id)) {
+            throw new ResourceNotFoundException("Contact info not found with id: " + booking_id);
+        }
 
-        try{
-            bookingRepository.deleteById(booking_id);
-            return true;
-        }
-        catch(Exception e){
-            return false;
-        }
+        bookingRepository.deleteById(booking_id);
     }
 
     @Override
-    public List<BookingDTO> getByUser_Id(int user_id) {
+    public List<BookingDTO> getByBookingsUser_Id(int user_id) {
         List<Booking> bookings = bookingRepository.findByUser_Id(user_id)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: "  + user_id));
 

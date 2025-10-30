@@ -14,10 +14,12 @@ import com.boje.hotelbooking.models.Hotel;
 import com.boje.hotelbooking.repositories.AmenityRepository;
 import com.boje.hotelbooking.repositories.HotelRepository;
 import com.boje.hotelbooking.services.HotelService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class HotelServiceImp implements HotelService {
     private final HotelRepository hotelRepository;
     private final AmenityRepository amenityRepository;
@@ -54,21 +56,21 @@ public class HotelServiceImp implements HotelService {
     }
 
     @Override
-    public HotelDTORequest updateHotel(HotelDTORequest hotelDTORequest) {
-        Hotel hotel = hotelRepository.findById(hotelDTORequest.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id: " + hotelDTORequest.getId()));
+    public HotelDTORequest updateHotel(int hotel_id, HotelDTO hotelDTO) {
+        Hotel hotel = hotelRepository.findById(hotel_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id: " + hotel_id));
 
-        hotel.setContactInfoHotel(hotelDTORequest.getContactInfoHotel());
-        hotel.setAmenities(hotelDTORequest.getAmenities());
-        hotel.setName(hotelDTORequest.getName());
-        hotel.setDescription(hotelDTORequest.getDescription());
-        hotel.setFranchise(hotelDTORequest.getFranchise());
-        hotel.setPolicies(hotelDTORequest.getPolicies());
-        hotel.setReviews(hotelDTORequest.getReviews());
-        hotel.setRooms(hotelDTORequest.getRooms());
-        hotel.setStarRating(hotelDTORequest.getStarRating());
-        hotel.setAddress(hotelDTORequest.getAddress());
-        hotel.setManagers(hotelDTORequest.getManagers());
+        hotel.setContactInfoHotel(hotelDTO.getContactInfoHotel());
+        hotel.setAmenities(hotelDTO.getAmenities());
+        hotel.setName(hotelDTO.getName());
+        hotel.setDescription(hotelDTO.getDescription());
+        hotel.setFranchise(hotelDTO.getFranchise());
+        hotel.setPolicies(hotelDTO.getPolicies());
+        hotel.setReviews(hotelDTO.getReviews());
+        hotel.setRooms(hotelDTO.getRooms());
+        hotel.setStarRating(hotelDTO.getStarRating());
+        hotel.setAddress(hotelDTO.getAddress());
+        hotel.setManagers(hotelDTO.getManagers());
 
         Hotel updatedHotel =hotelRepository.save(hotel);
 
@@ -76,14 +78,12 @@ public class HotelServiceImp implements HotelService {
     }
 
     @Override
-    public boolean deleteHotel(int hotel_id) {
-        try{
-            hotelRepository.deleteById(hotel_id);
-            return true;
+    public void deleteHotel(int hotel_id) {
+        if (!hotelRepository.existsById(hotel_id)) {
+            throw new ResourceNotFoundException("Contact info not found with id: " + hotel_id);
         }
-        catch(Exception e){
-            return false;
-        }
+
+        hotelRepository.deleteById(hotel_id);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class HotelServiceImp implements HotelService {
     }
 
     @Override
-    public List<HotelDTO> getByAddressZipCode(short zipCode) {
+    public List<HotelDTO> findByAddressZipCode(short zipCode) {
         List<Hotel> hotels = hotelRepository.findByAddress_ZipCode(zipCode)
                 .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with zipcode: " + zipCode));
 

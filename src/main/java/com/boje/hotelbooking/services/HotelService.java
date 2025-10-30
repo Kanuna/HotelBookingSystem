@@ -7,11 +7,11 @@ import java.util.List;;
 
 public interface HotelService {
     HotelDTORequest createHotel(HotelDTORequest hotelDTORequest);
-    HotelDTORequest updateHotel(HotelDTORequest hotelDTORequest);
-    boolean deleteHotel(int hotel_id);
+    HotelDTORequest updateHotel(int hotel_id, HotelDTO hotelDTO);
+    void deleteHotel(int hotel_id);
     HotelDTO findByName(String hotelName);
 
-    List<HotelDTO> getByAddressZipCode(short zipCode);
+    List<HotelDTO> findByAddressZipCode(short zipCode);
     List<HotelDTO> findByAddressCity(String city);
     List<HotelDTO> findByAddressRegion(String region);
 
