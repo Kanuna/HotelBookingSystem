@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface BookingService {
     BookingDTORequest createBooking(BookingDTORequest bookingDTORequest);
-    BookingDTORequest updateBooking(BookingDTORequest bookingDTORequest);
-    boolean deleteBooking(int booking_id);
-    List<BookingDTO> getByUser_Id(int user_id);
+    BookingDTORequest updateBooking(int booking_id, BookingDTO bookingDTO);
+    void deleteBooking(int booking_id);
+    List<BookingDTO> getByBookingsUser_Id(int user_id);
 }

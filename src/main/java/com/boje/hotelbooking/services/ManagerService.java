@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface ManagerService {
     ManagerDTORequest createManager(ManagerDTORequest managerDTORequest);
-    ManagerDTORequest updateManager(ManagerDTORequest managerDTORequest);
-    boolean deleteManager(int manager_id);
+    ManagerDTORequest updateManager(int manger_id, ManagerDTO managerDTO);
+    void deleteManager(int manager_id);
 
     ManagerDTO findManagerByEmail(String email);
     ManagerDTO findManagerByPhoneNumber(String phoneNumber);

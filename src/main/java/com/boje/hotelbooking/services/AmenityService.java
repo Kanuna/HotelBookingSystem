@@ -5,6 +5,6 @@ import com.boje.hotelbooking.dtoRequest.AmenityDTORequest;
 
 public interface AmenityService {
     AmenityDTORequest createAmenity(AmenityDTORequest amenityDTORequest);
-    AmenityDTORequest updateAmenity(AmenityDTORequest amenityDTORequest);
-    boolean deleteAmenity(int amenity_id);
+    AmenityDTORequest updateAmenity(int amenity_id, AmenityDTO amenityDTO);
+    void deleteAmenity(int amenity_id);
 }

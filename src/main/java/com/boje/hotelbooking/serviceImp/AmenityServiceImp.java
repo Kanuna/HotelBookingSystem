@@ -1,6 +1,7 @@
 package com.boje.hotelbooking.serviceImp;
 
 import com.boje.hotelbooking.ResourceNotFoundException.ResourceNotFoundException;
+import com.boje.hotelbooking.dto.AmenityDTO;
 import com.boje.hotelbooking.dtoRequest.AmenityDTORequest;
 import com.boje.hotelbooking.mapper.EntityMapper;
 import com.boje.hotelbooking.models.Amenity;
@@ -27,12 +28,12 @@ public class AmenityServiceImp implements AmenityService {
     }
 
     @Override
-    public AmenityDTORequest updateAmenity(AmenityDTORequest amenityDTORequest) {
-        Amenity amenity = amenityRepository.findById(amenityDTORequest.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Amenity not found with id: " + amenityDTORequest.getId()));
+    public AmenityDTORequest updateAmenity(int amenity_id, AmenityDTO amenityDTO) {
+        Amenity amenity = amenityRepository.findById(amenity_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Amenity not found with id: " + amenity_id));
 
-        amenity.setHotels(amenityDTORequest.getHotels());
-        amenity.setName(amenityDTORequest.getName());
+        amenity.setHotels(amenityDTO.getHotels());
+        amenity.setName(amenityDTO.getName());
 
         Amenity savedAmenity = amenityRepository.save(amenity);
 
@@ -40,14 +41,11 @@ public class AmenityServiceImp implements AmenityService {
     }
 
     @Override
-    public boolean deleteAmenity(int amenity_id) {
+    public void deleteAmenity(int amenity_id) {
+        if (!amenityRepository.existsById(amenity_id)) {
+            throw new ResourceNotFoundException("Contact info not found with id: " + amenity_id);
+        }
 
-        try{
-            amenityRepository.deleteById(amenity_id);
-            return true;
-        }
-        catch(Exception e){
-            return false;
-        }
+        amenityRepository.deleteById(amenity_id);
     }
 }

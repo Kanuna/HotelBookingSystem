@@ -42,15 +42,15 @@ public class AddressServiceImp implements AddressService {
     }
 
     @Override
-    public AddressDTORequest updateAddress(AddressDTORequest addressDTORequest) {
-        Address address = addressRepository.findById(addressDTORequest.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Address not found with id: " + addressDTORequest.getId()));
+    public AddressDTORequest updateAddress(int address_id, AddressDTO addressDTO) {
+        Address address = addressRepository.findById(address_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Address not found with id: " + address_id));
 
-        address.setRegion(addressDTORequest.getRegion());
-        address.setCity(addressDTORequest.getCity());
-        address.setZipCode(addressDTORequest.getZipCode());
-        address.setStreet(addressDTORequest.getStreet());
-        address.setHotel(addressDTORequest.getHotel());
+        address.setRegion(addressDTO.getRegion());
+        address.setCity(addressDTO.getCity());
+        address.setZipCode(addressDTO.getZipCode());
+        address.setStreet(addressDTO.getStreet());
+        address.setHotel(addressDTO.getHotel());
 
         Address updatedAddress = addressRepository.save(address);
 
@@ -58,15 +58,12 @@ public class AddressServiceImp implements AddressService {
     }
 
     @Override
-    public boolean deleteAddress(int address_id) {
+    public void deleteAddress(int address_id) {
+        if (!addressRepository.existsById(address_id)) {
+            throw new ResourceNotFoundException("Contact info not found with id: " + address_id);
+        }
 
-        try{
-            addressRepository.deleteById(address_id);
-            return true;
-        }
-        catch(Exception e){
-            return false;
-        }
+        addressRepository.deleteById(address_id);
     }
 
     @Override

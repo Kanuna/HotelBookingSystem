@@ -29,13 +29,13 @@ public class ContactInfoServiceImp implements ContactInfoService {
     }
 
     @Override
-    public ContactInfoDTORequest updateContactInfo(ContactInfoDTORequest contactInfoDTORequest) {
-        ContactInfo contactInfo = contactInfoRepository.findById(contactInfoDTORequest.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("ContactInfo not found with id: " +  contactInfoDTORequest.getId()));
+    public ContactInfoDTORequest updateContactInfo(int contactInfo_id, ContactInfoDTO contactInfoDTO) {
+        ContactInfo contactInfo = contactInfoRepository.findById(contactInfo_id)
+                .orElseThrow(() -> new ResourceNotFoundException("ContactInfo not found with id: " +  contactInfoDTO));
 
-        contactInfo.setEmail(contactInfoDTORequest.getEmail());
-        contactInfo.setUser(contactInfoDTORequest.getUser());
-        contactInfo.setPhoneNumber(contactInfoDTORequest.getPhone());
+        contactInfo.setEmail(contactInfoDTO.getEmail());
+        contactInfo.setUser(contactInfoDTO.getUser());
+        contactInfo.setPhoneNumber(contactInfoDTO.getPhone());
 
         ContactInfo updatedContactInfo = contactInfoRepository.save(contactInfo);
 
@@ -43,14 +43,12 @@ public class ContactInfoServiceImp implements ContactInfoService {
     }
 
     @Override
-    public boolean deleteContactInfo(int contactInfo_id) {
-        try{
-            contactInfoRepository.deleteById(contactInfo_id);
-            return true;
+    public void deleteContactInfo(int contactInfo_id) {
+        if (!contactInfoRepository.existsById(contactInfo_id)) {
+            throw new ResourceNotFoundException("Contact info not found with id: " + contactInfo_id);
         }
-        catch(Exception e){
-            return false;
-        }
+
+        contactInfoRepository.deleteById(contactInfo_id);
     }
 
     @Override

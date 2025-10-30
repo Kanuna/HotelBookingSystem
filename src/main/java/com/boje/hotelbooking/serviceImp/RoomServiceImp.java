@@ -32,16 +32,16 @@ public class RoomServiceImp implements RoomService {
     }
 
     @Override
-    public RoomDTORequest updateRoom(RoomDTORequest roomDTORequest) {
-        Room room = roomRepository.findById(roomDTORequest.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Room not found with id: " +  roomDTORequest.getId()));
+    public RoomDTORequest updateRoom(int room_id, RoomDTO roomDTO) {
+        Room room = roomRepository.findById(room_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Room not found with id: " +  room_id));
 
-        room.setBookings(roomDTORequest.getBookings());
-        room.setHasKitchen(roomDTORequest.isHasKitchen());
-        room.setNumberOfBeds(roomDTORequest.getNumberOfBeds());
-        room.setPrice(roomDTORequest.getPrice());
-        room.setOccupied(roomDTORequest.getOccupied());
-        room.setRoomSize(roomDTORequest.getRoomSize());
+        room.setBookings(roomDTO.getBookings());
+        room.setHasKitchen(roomDTO.isHasKitchen());
+        room.setNumberOfBeds(roomDTO.getNumberOfBeds());
+        room.setPrice(roomDTO.getPrice());
+        room.setOccupied(roomDTO.getOccupied());
+        room.setRoomSize(roomDTO.getRoomSize());
 
         Room updtedRoom = roomRepository.save(room);
 
@@ -49,13 +49,12 @@ public class RoomServiceImp implements RoomService {
     }
 
     @Override
-    public boolean deleteRoom(int room_id) {
-        try{
-            roomRepository.deleteById(room_id);
-            return true;
-        }catch (Exception e){
-            return false;
+    public void deleteRoom(int room_id) {
+        if (!roomRepository.existsById(room_id)) {
+            throw new ResourceNotFoundException("Contact info not found with id: " + room_id);
         }
+
+        roomRepository.deleteById(room_id);
     }
 
     @Override

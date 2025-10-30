@@ -29,14 +29,16 @@ public class ContactInfoHotelServiceImp implements ContactInfoHotelService {
     }
 
     @Override
-    public ContactInfoHotelDTORequest updateContactInfoHotel(ContactInfoHotelDTORequest contactInfoHotelDTORequest) {
-        ContactInfoHotel contactInfoHotel = contactInfoHotelRepository.findById(contactInfoHotelDTORequest.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("ContactInfoHotel not found with id: " + contactInfoHotelDTORequest.getId()));
+    public ContactInfoHotelDTORequest updateContactInfoHotel(
+            int contactInfoHotel_id,
+            ContactInfoHotelDTO contactInfoHotelDTO) {
+        ContactInfoHotel contactInfoHotel = contactInfoHotelRepository.findById(contactInfoHotel_id)
+                .orElseThrow(() -> new ResourceNotFoundException("ContactInfoHotel not found with id: " + contactInfoHotel_id));
 
-        contactInfoHotel.setHotel(contactInfoHotelDTORequest.getHotel());
-        contactInfoHotel.setHotelPhoneNumber(contactInfoHotelDTORequest.getHotelPhoneNumber());
-        contactInfoHotel.setManagers(contactInfoHotelDTORequest.getManagers());
-        contactInfoHotel.setHotelEmail(contactInfoHotelDTORequest.getHotelEmail());
+        contactInfoHotel.setHotel(contactInfoHotelDTO.getHotel());
+        contactInfoHotel.setHotelPhoneNumber(contactInfoHotelDTO.getHotelPhoneNumber());
+        contactInfoHotel.setManagers(contactInfoHotelDTO.getManagers());
+        contactInfoHotel.setHotelEmail(contactInfoHotelDTO.getHotelEmail());
 
         ContactInfoHotel updatedContactInfoHotel = contactInfoHotelRepository.save(contactInfoHotel);
 
@@ -44,13 +46,13 @@ public class ContactInfoHotelServiceImp implements ContactInfoHotelService {
     }
 
     @Override
-    public boolean deleteContactInfoHotel(int contact_id) {
+    public void deleteContactInfoHotel(int contact_id) {
         try{
             contactInfoHotelRepository.deleteById(contact_id);
-            return true;
+
         }
         catch(Exception e){
-            return false;
+
         }
     }
 

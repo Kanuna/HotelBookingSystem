@@ -32,13 +32,13 @@ public class ReviewServiceImp implements ReviewService {
     }
 
     @Override
-    public ReviewDTORequest updateReview(ReviewDTORequest reviewDTORequest) {
-        Review review = reviewRepository.findById(reviewDTORequest.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Review not found with phone: " +  reviewDTORequest.getId()));
+    public ReviewDTORequest updateReview(int review_id, ReviewDTO reviewDTO) {
+        Review review = reviewRepository.findById(review_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Review not found with phone: " +  review_id));
 
-        review.setTitle(reviewDTORequest.getTitle());
-        review.setComment(reviewDTORequest.getComment());
-        review.setRating(reviewDTORequest.getRating());
+        review.setTitle(reviewDTO.getTitle());
+        review.setComment(reviewDTO.getComment());
+        review.setRating(reviewDTO.getRating());
 
         Review updatedReview = reviewRepository.save(review);
 
@@ -46,13 +46,12 @@ public class ReviewServiceImp implements ReviewService {
     }
 
     @Override
-    public boolean deleteReview(int review_id) {
-        try{
-            reviewRepository.deleteById(review_id);
-            return true;
-        }catch (Exception e){
-            return false;
+    public void deleteReview(int review_id) {
+        if (!reviewRepository.existsById(review_id)) {
+            throw new ResourceNotFoundException("Contact info not found with id: " + review_id);
         }
+
+        reviewRepository.deleteById(review_id);
     }
 
     @Override

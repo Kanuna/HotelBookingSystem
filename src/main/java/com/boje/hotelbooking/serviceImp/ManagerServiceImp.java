@@ -32,15 +32,15 @@ public class ManagerServiceImp implements ManagerService {
     }
 
     @Override
-    public ManagerDTORequest updateManager(ManagerDTORequest managerDTORequest) {
-        Manager manager = managerRepository.findById(managerDTORequest.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Manager not found with id: " +  managerDTORequest.getId()));
+    public ManagerDTORequest updateManager(int manager_id,ManagerDTO managerDTO) {
+        Manager manager = managerRepository.findById(manager_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Manager not found with id: " + manager_id));
 
-        manager.setHotel(managerDTORequest.getHotel());
-        manager.setEmail(managerDTORequest.getEmail());
-        manager.setContactInfoHotel(managerDTORequest.getContactInfoHotel());
-        manager.setPhoneNumber(managerDTORequest.getPhoneNumber());
-        manager.setFullName(managerDTORequest.getFullName());
+        manager.setHotel(managerDTO.getHotel());
+        manager.setEmail(managerDTO.getEmail());
+        manager.setContactInfoHotel(managerDTO.getContactInfoHotel());
+        manager.setPhoneNumber(managerDTO.getPhoneNumber());
+        manager.setFullName(managerDTO.getFullName());
 
         Manager updatedManager = managerRepository.save(manager);
 
@@ -48,14 +48,12 @@ public class ManagerServiceImp implements ManagerService {
     }
 
     @Override
-    public boolean deleteManager(int manager_id) {
-        try{
-            managerRepository.deleteById(manager_id);
-            return true;
+    public void deleteManager(int manager_id) {
+        if (!managerRepository.existsById(manager_id)) {
+            throw new ResourceNotFoundException("Contact info not found with id: " + manager_id);
         }
-        catch(Exception e){
-            return false;
-        }
+
+        managerRepository.deleteById(manager_id);
     }
 
     @Override
