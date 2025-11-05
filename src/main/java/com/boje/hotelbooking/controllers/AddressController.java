@@ -19,8 +19,8 @@ public class AddressController {
 
     @PostMapping("/{hotelId}/address")
     public ResponseEntity<AddressDTORequest> createAddress(@PathVariable int hotelId,
-                                                           @RequestBody AddressDTORequest addressDTORequest){
-        AddressDTORequest createdAddress = addressServiceImp.createAddress(hotelId, addressDTORequest);
+                                                           @RequestBody AddressDTO addressDTO){
+        AddressDTORequest createdAddress = addressServiceImp.createAddress(hotelId, addressDTO);
 
         URI location = URI.create(String.format("/addresses/%d",createdAddress.getId()));
         return ResponseEntity.created(location).body(createdAddress);

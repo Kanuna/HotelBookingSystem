@@ -19,8 +19,8 @@ public class BookingController {
     }
 
     @PostMapping("/booking")
-    public ResponseEntity<BookingDTORequest> createBooking(@RequestBody BookingDTORequest bookingDTORequest){
-        BookingDTORequest createdBooking = bookingServiceImp.createBooking(bookingDTORequest);
+    public ResponseEntity<BookingDTORequest> createBooking(@RequestBody BookingDTO bookingDTO){
+        BookingDTORequest createdBooking = bookingServiceImp.createBooking(bookingDTO);
         URI location = URI.create(String.format("/bookings/%d",createdBooking.getId()));
 
         return  ResponseEntity.created(location).body(createdBooking);

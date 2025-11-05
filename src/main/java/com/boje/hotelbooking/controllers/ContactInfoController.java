@@ -19,8 +19,8 @@ public class ContactInfoController {
 
 
     @PostMapping("/contact-info")
-    public ResponseEntity<ContactInfoDTORequest> createContactInfo(@RequestBody ContactInfoDTORequest contactInfoDTORequest){
-        ContactInfoDTORequest createdContactInfo = contactInfoServiceImp.createContactInfo(contactInfoDTORequest);
+    public ResponseEntity<ContactInfoDTORequest> createContactInfo(@RequestBody ContactInfoDTO contactInfoDTO){
+        ContactInfoDTORequest createdContactInfo = contactInfoServiceImp.createContactInfo(contactInfoDTO);
 
         URI location = URI.create(String.format("/contact-infos/%d", createdContactInfo.getId()));
         return ResponseEntity.created(location).body(createdContactInfo);

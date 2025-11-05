@@ -19,8 +19,8 @@ public class ContactInfoHotelController {
 
 
     @PostMapping("/contact-info-hotel")
-    public ResponseEntity<ContactInfoHotelDTORequest> createContactInfoHotel(@RequestBody ContactInfoHotelDTORequest contactInfoHotelDTORequest){
-        ContactInfoHotelDTORequest createdContactInfoHotel = contactInfoHotelServiceImp.createContactInfoHotel(contactInfoHotelDTORequest);
+    public ResponseEntity<ContactInfoHotelDTORequest> createContactInfoHotel(@RequestBody ContactInfoHotelDTO contactInfoHotelDTO){
+        ContactInfoHotelDTORequest createdContactInfoHotel = contactInfoHotelServiceImp.createContactInfoHotel(contactInfoHotelDTO);
 
         URI location = URI.create(String.format("contact-info-hotels/%d", createdContactInfoHotel.getId()));
         return ResponseEntity.created(location).body(createdContactInfoHotel);
