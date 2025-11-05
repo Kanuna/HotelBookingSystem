@@ -21,8 +21,8 @@ public class UserController {
 
 
     @PostMapping("/user")
-    public ResponseEntity<UserDTORequest> createUser(@RequestBody UserDTORequest userDTORequest){
-        UserDTORequest createdUser =  userServiceImp.createUser(userDTORequest);
+    public ResponseEntity<UserDTORequest> createUser(@RequestBody UserDTO userDTO){
+        UserDTORequest createdUser =  userServiceImp.createUser(userDTO);
 
         URI location = URI.create(String.format("/users%d", createdUser.getId()));
         return ResponseEntity.created(location).body(createdUser);

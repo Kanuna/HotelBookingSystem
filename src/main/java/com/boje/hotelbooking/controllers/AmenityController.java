@@ -18,8 +18,8 @@ public class AmenityController {
     }
 
     @PostMapping("/amenity")
-    public ResponseEntity<AmenityDTORequest> createAmenity(@RequestBody AmenityDTORequest amenityDTORequest){
-        AmenityDTORequest createdAmenity =  amenityServiceImp.createAmenity(amenityDTORequest);
+    public ResponseEntity<AmenityDTORequest> createAmenity(@RequestBody AmenityDTO amenityDTO){
+        AmenityDTORequest createdAmenity =  amenityServiceImp.createAmenity(amenityDTO);
 
         URI location = URI.create(String.format("/amenities/%d",createdAmenity.getId()));
         return ResponseEntity.created(location).body(createdAmenity);

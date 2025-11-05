@@ -4,7 +4,6 @@ import com.boje.hotelbooking.models.*;
 import com.boje.hotelbooking.dto.*;
 import com.boje.hotelbooking.dtoRequest.*;
 import jdk.jfr.Name;
-import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 
@@ -27,9 +26,7 @@ public interface EntityMapper {
     @Named("toAmenityDTORequest")
     AmenityDTORequest toAmenityDTORequest(Amenity amenity);
 
-
     List<Amenity> toAmenityList(List<AmenityDTO> dtos);
-
     List<AmenityDTO> toAmenityDTOList(List<Amenity> entities);
 
 

@@ -21,8 +21,8 @@ public class RoomController {
 
 
     @PostMapping("/room")
-    public ResponseEntity<RoomDTORequest> createRoom(@RequestBody RoomDTORequest roomDTORequest) {
-        RoomDTORequest createdRoom = roomServiceImp.createRoom(roomDTORequest);
+    public ResponseEntity<RoomDTORequest> createRoom(@RequestBody RoomDTO roomDTO) {
+        RoomDTORequest createdRoom = roomServiceImp.createRoom(roomDTO);
 
         URI location = URI.create(String.format("/rooms/%d", createdRoom.getId()));
         return ResponseEntity.created(location).body(createdRoom);

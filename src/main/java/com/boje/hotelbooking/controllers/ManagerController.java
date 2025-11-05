@@ -20,8 +20,8 @@ public class ManagerController {
 
 
     @PostMapping("/manager")
-    public ResponseEntity<ManagerDTORequest> createManager(@RequestBody ManagerDTORequest managerDTORequest){
-        ManagerDTORequest createdManager =  managerServiceImp.createManager(managerDTORequest);
+    public ResponseEntity<ManagerDTORequest> createManager(@RequestBody ManagerDTO managerDTO){
+        ManagerDTORequest createdManager =  managerServiceImp.createManager(managerDTO);
 
         URI location = URI.create(String.format("/managers/%d", createdManager.getId()));
         return ResponseEntity.created(location).body(createdManager);

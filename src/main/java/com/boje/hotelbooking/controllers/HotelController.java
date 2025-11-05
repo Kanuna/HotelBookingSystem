@@ -21,8 +21,8 @@ public class HotelController {
 
 
     @PostMapping("/hotel")
-    public ResponseEntity<HotelDTORequest> createHotel(HotelDTORequest hotelDTORequest){
-        HotelDTORequest createdHotel =  hotelServiceImp.createHotel(hotelDTORequest);
+    public ResponseEntity<HotelDTORequest> createHotel(HotelDTO hotelDTO){
+        HotelDTORequest createdHotel =  hotelServiceImp.createHotel(hotelDTO);
 
         URI location = URI.create(String.format("/hotels%d", createdHotel.getId()));
         return ResponseEntity.created(location).body(createdHotel);

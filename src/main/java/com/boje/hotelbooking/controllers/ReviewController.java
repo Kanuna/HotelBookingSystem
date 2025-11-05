@@ -19,8 +19,8 @@ public class ReviewController {
     }
 
     @PostMapping("/review")
-    public ResponseEntity<ReviewDTORequest> createReview(@RequestBody ReviewDTORequest reviewDTORequest){
-        ReviewDTORequest createdReview = reviewServiceImp.createReview(reviewDTORequest);
+    public ResponseEntity<ReviewDTORequest> createReview(@RequestBody ReviewDTO reviewDTO){
+        ReviewDTORequest createdReview = reviewServiceImp.createReview(reviewDTO);
 
         URI location = URI.create(String.format("/reviews/%d",createdReview.getId()));
         return ResponseEntity.created(location).body(createdReview);
