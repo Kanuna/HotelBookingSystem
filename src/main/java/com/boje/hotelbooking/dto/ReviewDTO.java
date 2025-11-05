@@ -1,7 +1,5 @@
 package com.boje.hotelbooking.dto;
 
-import com.boje.hotelbooking.models.Hotel;
-import com.boje.hotelbooking.models.User;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +17,6 @@ public class ReviewDTO {
     private double rating;
     private LocalDate createdAt;
 
-    private User user;
-    private Hotel hotel;
+    private UserDTO user;
+    private HotelDTO hotel;
 }

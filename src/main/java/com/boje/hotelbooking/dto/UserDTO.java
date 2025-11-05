@@ -1,7 +1,5 @@
 package com.boje.hotelbooking.dto;
 
-import com.boje.hotelbooking.models.Booking;
-import com.boje.hotelbooking.models.ContactInfo;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +14,6 @@ public class UserDTO {
     @NotBlank(message = "User must have a password.")
     private String password;
 
-    private List<Booking> bookings;
-    private ContactInfo contactInfo;
+    private List<BookingDTO> bookings;
+    private ContactInfoDTO contactInfo;
 }

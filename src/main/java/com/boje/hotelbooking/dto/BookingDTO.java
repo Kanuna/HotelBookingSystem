@@ -1,9 +1,5 @@
 package com.boje.hotelbooking.dto;
 
-
-import com.boje.hotelbooking.models.Booking;
-import com.boje.hotelbooking.models.Room;
-import com.boje.hotelbooking.models.User;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +18,7 @@ public class BookingDTO {
     private LocalDateTime updatedAt;
 
     @NotNull(message = "Booking must have a room.")
-    private Room room;
+    private RoomDTO room;
     @NotNull(message = "Booking must have a user.")
-    private User user;
+    private UserDTO user;
 }
