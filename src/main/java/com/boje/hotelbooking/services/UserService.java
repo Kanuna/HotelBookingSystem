@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.EntityGraph;
 
 
 public interface UserService {
-    UserDTORequest createUser(UserDTORequest userDTORequest);
-    UserDTORequest updateUser(int user_id, UserDTO userDTO);
+    UserDTORequest createUser(UserDTO UserDTO);
+    UserDTO updateUser(UserDTORequest UserDTORequest);
     void deleteUser(int user_id);
 
     UserDTO findByEmail(String email);

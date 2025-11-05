@@ -28,10 +28,9 @@ public class ManagerController {
     }
 
 
-    @PutMapping("/{managerId}")
-    public ResponseEntity<ManagerDTO> updateManager(@PathVariable Integer managerId,
-                                                    @RequestBody ManagerDTO managerDTO){
-        ManagerDTO updatedManager =  managerServiceImp.updateManager(managerId, managerDTO);
+    @PutMapping("/manager")
+    public ResponseEntity<ManagerDTO> updateManager(@RequestBody ManagerDTORequest managerDTORequest){
+        ManagerDTO updatedManager =  managerServiceImp.updateManager(managerDTORequest);
         return  ResponseEntity.ok().body(updatedManager);
     }
 

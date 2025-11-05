@@ -27,11 +27,11 @@ public class AddressServiceImp implements AddressService {
 
 
     @Override
-    public AddressDTORequest createAddress(int hotel_id, AddressDTORequest addressDTORequest) {
+    public AddressDTORequest createAddress(int hotel_id, AddressDTO addressDTO) {
         Hotel hotel = hotelRepository.findById(hotel_id)
                 .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id: " + hotel_id));
 
-        Address address = entityMapper.toAddress(addressDTORequest);
+        Address address = entityMapper.toAddress(addressDTO);
 
         address.setHotel(hotel);
         hotel.setAddress(address);
@@ -42,19 +42,19 @@ public class AddressServiceImp implements AddressService {
     }
 
     @Override
-    public AddressDTORequest updateAddress(int address_id, AddressDTO addressDTO) {
-        Address address = addressRepository.findById(address_id)
-                .orElseThrow(() -> new ResourceNotFoundException("Address not found with id: " + address_id));
+    public AddressDTO updateAddress(AddressDTORequest addressDTORequest) {
+        Address address = addressRepository.findById(addressDTORequest.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Address not found with id: " + addressDTORequest.getId()));
 
-        address.setRegion(addressDTO.getRegion());
-        address.setCity(addressDTO.getCity());
-        address.setZipCode(addressDTO.getZipCode());
-        address.setStreet(addressDTO.getStreet());
-        address.setHotel(addressDTO.getHotel());
+        address.setRegion(addressDTORequest.getRegion());
+        address.setCity(addressDTORequest.getCity());
+        address.setZipCode(addressDTORequest.getZipCode());
+        address.setStreet(addressDTORequest.getStreet());
+        address.setHotel(entityMapper.toHotel(addressDTORequest.getHotel()));
 
         Address updatedAddress = addressRepository.save(address);
 
-        return entityMapper.toAddressDTORequest(updatedAddress);
+        return entityMapper.toAddressDTO(updatedAddress);
     }
 
     @Override

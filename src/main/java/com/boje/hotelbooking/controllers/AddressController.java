@@ -26,10 +26,9 @@ public class AddressController {
         return ResponseEntity.created(location).body(createdAddress);
     }
 
-    @PutMapping("/{addressId}")
-    public ResponseEntity<AddressDTO> updateAddress(@PathVariable int addressId,
-                                                           @RequestBody AddressDTO addressDTO){
-        AddressDTO updatedAddress = addressServiceImp.updateAddress(addressId, addressDTO);
+    @PutMapping("/address")
+    public ResponseEntity<AddressDTO> updateAddress(@RequestBody AddressDTORequest addressDTORequest){
+        AddressDTO updatedAddress = addressServiceImp.updateAddress(addressDTORequest);
         return  ResponseEntity.ok(updatedAddress);
     }
 

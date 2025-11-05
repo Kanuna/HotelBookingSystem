@@ -21,25 +21,25 @@ public class ContactInfoServiceImp implements ContactInfoService {
 
 
     @Override
-    public ContactInfoDTORequest createContactInfo(ContactInfoDTORequest contactInfoDTORequest) {
-        ContactInfo contactInfo = entityMapper.toContactInfo(contactInfoDTORequest);
+    public ContactInfoDTORequest createContactInfo(ContactInfoDTO contactInfoDTO) {
+        ContactInfo contactInfo = entityMapper.toContactInfo(contactInfoDTO);
         ContactInfo createdContactInfo = contactInfoRepository.save(contactInfo);
 
         return entityMapper.toContactInfoDTORequest(createdContactInfo);
     }
 
     @Override
-    public ContactInfoDTORequest updateContactInfo(int contactInfo_id, ContactInfoDTO contactInfoDTO) {
-        ContactInfo contactInfo = contactInfoRepository.findById(contactInfo_id)
-                .orElseThrow(() -> new ResourceNotFoundException("ContactInfo not found with id: " +  contactInfoDTO));
+    public ContactInfoDTO updateContactInfo(ContactInfoDTORequest contactInfoDTORequest) {
+        ContactInfo contactInfo = contactInfoRepository.findById(contactInfoDTORequest.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("ContactInfo not found with id: " + contactInfoDTORequest.getId()));
 
-        contactInfo.setEmail(contactInfoDTO.getEmail());
-        contactInfo.setUser(contactInfoDTO.getUser());
-        contactInfo.setPhoneNumber(contactInfoDTO.getPhone());
+        contactInfo.setEmail(contactInfoDTORequest.getEmail());
+        contactInfo.setUser(entityMapper.toUser(contactInfoDTORequest.getUser()));
+        contactInfo.setPhoneNumber(contactInfoDTORequest.getPhone());
 
         ContactInfo updatedContactInfo = contactInfoRepository.save(contactInfo);
 
-        return entityMapper.toContactInfoDTORequest(updatedContactInfo);
+        return entityMapper.toContactInfoDTO(updatedContactInfo);
     }
 
     @Override

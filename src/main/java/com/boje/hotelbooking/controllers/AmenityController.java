@@ -25,9 +25,9 @@ public class AmenityController {
         return ResponseEntity.created(location).body(createdAmenity);
     }
 
-    @PutMapping("/{amenityId}")
-    public ResponseEntity<AmenityDTO> updateAmenity(@PathVariable int amenityId, AmenityDTO amenityDTO){
-        AmenityDTO updatedAmenity = amenityServiceImp.updateAmenity(amenityId,amenityDTO);
+    @PutMapping("/amenity")
+    public ResponseEntity<AmenityDTO> updateAmenity(@RequestBody AmenityDTORequest amenityDTORequest){
+        AmenityDTO updatedAmenity = amenityServiceImp.updateAmenity(amenityDTORequest);
 
         return ResponseEntity.ok(updatedAmenity);
     }

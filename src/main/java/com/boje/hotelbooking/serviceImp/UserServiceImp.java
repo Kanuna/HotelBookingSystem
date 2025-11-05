@@ -21,26 +21,27 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDTORequest createUser(UserDTORequest userDTORequest) {
-        User user = entityMapper.toUser(userDTORequest);
+    public UserDTORequest createUser(UserDTO userDTO) {
+        User user = entityMapper.toUser(userDTO);
         User userSaved = userRepository.save(user);
 
         return entityMapper.toUserDTORequest(userSaved);
     }
 
     @Override
-    public UserDTORequest updateUser(int user_id, UserDTO userDTO) {
-        User user = userRepository.findById(user_id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + user_id));
+    public UserDTO updateUser(UserDTORequest userDTORequest) {
+        User user = userRepository.findById(userDTORequest.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userDTORequest.getId()));
 
-        user.setAge(userDTO.getAge());
-        user.setBookings(userDTO.getBookings());
-        user.setPassword(userDTO.getPassword());
-        user.setFullName(userDTO.getFullName());
-        user.setContactInfo(userDTO.getContactInfo());
+        user.setAge(userDTORequest.getAge());
+        user.setPassword(userDTORequest.getPassword());
+        user.setFullName(userDTORequest.getFullName());
+
+        user.setBookings(entityMapper.toBookingList(userDTORequest.getBookings()));
+        user.setContactInfo(entityMapper.toContactInfo(userDTORequest.getContactInfo()));
 
         User updatedUser = userRepository.save(user);
-        return entityMapper.toUserDTORequest(updatedUser);
+        return entityMapper.toUserDTO(updatedUser);
     }
 
     @Override

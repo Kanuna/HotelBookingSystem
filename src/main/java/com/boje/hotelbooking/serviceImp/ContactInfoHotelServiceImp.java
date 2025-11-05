@@ -21,28 +21,27 @@ public class ContactInfoHotelServiceImp implements ContactInfoHotelService {
     }
 
     @Override
-    public ContactInfoHotelDTORequest createContactInfoHotel(ContactInfoHotelDTORequest contactInfoHotelDTORequest) {
-        ContactInfoHotel contactInfoHotel = entityMapper.toContactInfoHotel(contactInfoHotelDTORequest);
+    public ContactInfoHotelDTORequest createContactInfoHotel(ContactInfoHotelDTO contactInfoHotelDTO) {
+        ContactInfoHotel contactInfoHotel = entityMapper.toContactInfoHotel(contactInfoHotelDTO);
         ContactInfoHotel createdContactInfoHotel = contactInfoHotelRepository.save(contactInfoHotel);
 
         return entityMapper.toContactInfoHotelDTORequest(createdContactInfoHotel);
     }
 
     @Override
-    public ContactInfoHotelDTORequest updateContactInfoHotel(
-            int contactInfoHotel_id,
-            ContactInfoHotelDTO contactInfoHotelDTO) {
-        ContactInfoHotel contactInfoHotel = contactInfoHotelRepository.findById(contactInfoHotel_id)
-                .orElseThrow(() -> new ResourceNotFoundException("ContactInfoHotel not found with id: " + contactInfoHotel_id));
+    public ContactInfoHotelDTO updateContactInfoHotel(
+            ContactInfoHotelDTORequest contactInfoHotelDTORequest) {
+        ContactInfoHotel contactInfoHotel = contactInfoHotelRepository.findById(contactInfoHotelDTORequest.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("ContactInfoHotel not found with id: " + contactInfoHotelDTORequest.getId()));
 
-        contactInfoHotel.setHotel(contactInfoHotelDTO.getHotel());
-        contactInfoHotel.setHotelPhoneNumber(contactInfoHotelDTO.getHotelPhoneNumber());
-        contactInfoHotel.setManagers(contactInfoHotelDTO.getManagers());
-        contactInfoHotel.setHotelEmail(contactInfoHotelDTO.getHotelEmail());
+        contactInfoHotel.setHotel(entityMapper.toHotel(contactInfoHotelDTORequest.getHotel()));
+        contactInfoHotel.setHotelPhoneNumber(contactInfoHotelDTORequest.getHotelPhoneNumber());
+        contactInfoHotel.setManagers(entityMapper.toManagerList(contactInfoHotelDTORequest.getManagers()));
+        contactInfoHotel.setHotelEmail(contactInfoHotelDTORequest.getHotelEmail());
 
         ContactInfoHotel updatedContactInfoHotel = contactInfoHotelRepository.save(contactInfoHotel);
 
-        return  entityMapper.toContactInfoHotelDTORequest(updatedContactInfoHotel);
+        return  entityMapper.toContactInfoHotelDTO(updatedContactInfoHotel);
     }
 
     @Override

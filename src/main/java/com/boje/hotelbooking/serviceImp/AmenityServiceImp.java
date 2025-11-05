@@ -20,20 +20,20 @@ public class AmenityServiceImp implements AmenityService {
     }
 
     @Override
-    public AmenityDTORequest createAmenity(AmenityDTORequest amenityDTORequest) {
-        Amenity amenity = entityMapper.toAmenity(amenityDTORequest);
+    public AmenityDTORequest createAmenity(AmenityDTO amenityDTO) {
+        Amenity amenity = entityMapper.toAmenity(amenityDTO);
         Amenity savedAmenity = amenityRepository.save(amenity);
 
         return entityMapper.toAmenityDTORequest(savedAmenity);
     }
 
     @Override
-    public AmenityDTORequest updateAmenity(int amenity_id, AmenityDTO amenityDTO) {
-        Amenity amenity = amenityRepository.findById(amenity_id)
-                .orElseThrow(() -> new ResourceNotFoundException("Amenity not found with id: " + amenity_id));
+    public AmenityDTO updateAmenity(AmenityDTORequest amenityDTORequest) {
+        Amenity amenity = amenityRepository.findById(amenityDTORequest.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Amenity not found with id: " + amenityDTORequest.getId()));
 
-        amenity.setHotels(amenityDTO.getHotels());
-        amenity.setName(amenityDTO.getName());
+        amenity.setHotels(entityMapper.toHotelList(amenityDTORequest.getHotels()));
+        amenity.setName(amenityDTORequest.getName());
 
         Amenity savedAmenity = amenityRepository.save(amenity);
 

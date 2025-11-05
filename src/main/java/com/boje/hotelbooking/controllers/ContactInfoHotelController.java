@@ -27,10 +27,9 @@ public class ContactInfoHotelController {
     }
 
 
-    @PutMapping("/{contactInfoHotelId}")
-    public ResponseEntity<ContactInfoHotelDTO> updateContactInfoHotel(@PathVariable int contactInfohotelId,
-                                                                      @RequestBody ContactInfoHotelDTO contactInfoHotelDTO){
-        ContactInfoHotelDTO updatedContactInfoHotel = contactInfoHotelServiceImp.updateContactInfoHotel(contactInfohotelId, contactInfoHotelDTO);
+    @PutMapping("/contact-info-hotel")
+    public ResponseEntity<ContactInfoHotelDTO> updateContactInfoHotel(@RequestBody ContactInfoHotelDTORequest contactInfoHotelDTORequest){
+        ContactInfoHotelDTO updatedContactInfoHotel = contactInfoHotelServiceImp.updateContactInfoHotel(contactInfoHotelDTORequest);
         return ResponseEntity.ok(updatedContactInfoHotel);
     }
 

@@ -26,10 +26,9 @@ public class ContactInfoController {
         return ResponseEntity.created(location).body(createdContactInfo);
     }
 
-    @PutMapping("/{contactInfoId}")
-    public ResponseEntity<ContactInfoDTO> updateContactInfo(@PathVariable int contactInfoId,
-                                                            @RequestBody ContactInfoDTORequest contactInfoDTORequest){
-        ContactInfoDTO  updatedContactInfo = contactInfoServiceImp.updateContactInfo(contactInfoId, contactInfoDTORequest);
+    @PutMapping("/contact-info")
+    public ResponseEntity<ContactInfoDTO> updateContactInfo(@RequestBody ContactInfoDTORequest contactInfoDTORequest){
+        ContactInfoDTO  updatedContactInfo = contactInfoServiceImp.updateContactInfo(contactInfoDTORequest);
         return ResponseEntity.ok(updatedContactInfo);
     }
 

@@ -23,27 +23,27 @@ public class BookingServiceImp implements BookingService {
     }
 
     @Override
-    public BookingDTORequest createBooking(BookingDTORequest bookingDTORequest) {
-        Booking booking = entityMapper.toBooking(bookingDTORequest);
+    public BookingDTORequest createBooking(BookingDTO bookingDTO) {
+        Booking booking = entityMapper.toBooking(bookingDTO);
         Booking savedBooking = bookingRepository.save(booking);
 
         return entityMapper.toBookingDTORequest(savedBooking);
     }
 
     @Override
-    public BookingDTORequest updateBooking(int booking_id, BookingDTO bookingDTO) {
-        Booking booking = bookingRepository.findById(booking_id)
-                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: "  + booking_id));
+    public BookingDTO updateBooking(BookingDTORequest bookingDTORequest) {
+        Booking booking = bookingRepository.findById(bookingDTORequest.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: "  + bookingDTORequest.getId()));
 
-        booking.setUpdatedAt(bookingDTO.getUpdatedAt());
-        booking.setRoom(bookingDTO.getRoom());
-        booking.setUser(bookingDTO.getUser());
-        booking.setStartDate(bookingDTO.getStartDate());
-        booking.setEndDate(bookingDTO.getEndDate());
+        booking.setUpdatedAt(bookingDTORequest.getUpdatedAt());
+        booking.setRoom(entityMapper.toRoom(bookingDTORequest.getRoom()));
+        booking.setUser(entityMapper.toUser(bookingDTORequest.getUser()));
+        booking.setStartDate(bookingDTORequest.getStartDate());
+        booking.setEndDate(bookingDTORequest.getEndDate());
 
         Booking savedBooking = bookingRepository.save(booking);
 
-        return entityMapper.toBookingDTORequest(savedBooking);
+        return entityMapper.toBookingDTO(savedBooking);
     }
 
     @Override

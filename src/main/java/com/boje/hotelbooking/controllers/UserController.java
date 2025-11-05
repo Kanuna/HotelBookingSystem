@@ -28,10 +28,9 @@ public class UserController {
         return ResponseEntity.created(location).body(createdUser);
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable int user_id,
-                                              @RequestBody UserDTO userDTO){
-        UserDTO updatedUser = userServiceImp.updateUser(user_id, userDTO);
+    @PutMapping("/user")
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTORequest userDTORequest){
+        UserDTO updatedUser = userServiceImp.updateUser(userDTORequest);
 
         return ResponseEntity.ok(updatedUser);
     }
