@@ -26,10 +26,9 @@ public class ReviewController {
         return ResponseEntity.created(location).body(createdReview);
     }
 
-    @PutMapping("/{reviewId}")
-    public ResponseEntity<ReviewDTO> updateReview(@PathVariable int reviewId,
-                                                         @RequestBody ReviewDTO reviewDTO){
-        ReviewDTORequest updatedReview = reviewServiceImp.updateReview(reviewId,reviewDTO);
+    @PutMapping("/review")
+    public ResponseEntity<ReviewDTO> updateReview(@RequestBody ReviewDTORequest reviewDTORequest){
+        ReviewDTO updatedReview = reviewServiceImp.updateReview(reviewDTORequest);
         return ResponseEntity.ok(updatedReview);
     }
 

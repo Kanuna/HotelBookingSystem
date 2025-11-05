@@ -26,10 +26,9 @@ public class BookingController {
         return  ResponseEntity.created(location).body(createdBooking);
     }
 
-    @PutMapping("/{booking_id}")
-    public ResponseEntity<BookingDTO> updateBooking(@PathVariable int booking_id,
-                                                    @RequestBody BookingDTORequest bookingDTORequest){
-        BookingDTO  updatedBooking = bookingServiceImp.updateBooking(booking_id, bookingDTORequest);
+    @PutMapping("/booking")
+    public ResponseEntity<BookingDTO> updateBooking(@RequestBody BookingDTORequest bookingDTORequest){
+        BookingDTO  updatedBooking = bookingServiceImp.updateBooking(bookingDTORequest);
         return ResponseEntity.ok(updatedBooking);
     }
 

@@ -5,8 +5,8 @@ import com.boje.hotelbooking.dtoRequest.ContactInfoDTORequest;
 
 
 public interface ContactInfoService {
-    ContactInfoDTORequest createContactInfo(ContactInfoDTORequest contactInfoDTORequest);
-    ContactInfoDTORequest updateContactInfo(int contactInfo_id, ContactInfoDTO contactInfoDTO);
+    ContactInfoDTORequest createContactInfo(ContactInfoDTO contactInfoDTO);
+    ContactInfoDTO updateContactInfo(ContactInfoDTORequest contactInfoDTORequest);
     void deleteContactInfo(int contactInfo_id);
     ContactInfoDTO getByEmail(String email);
     ContactInfoDTO getByPhone(String phone);

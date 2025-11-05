@@ -24,25 +24,25 @@ public class ReviewServiceImp implements ReviewService {
 
 
     @Override
-    public ReviewDTORequest createReview(ReviewDTORequest reviewDTORequest) {
-        Review  review = entityMapper.toReview(reviewDTORequest);
+    public ReviewDTORequest createReview(ReviewDTO reviewDTO) {
+        Review  review = entityMapper.toReview(reviewDTO);
         Review createdReview = reviewRepository.save(review);
 
         return entityMapper.toReviewDTORequest(createdReview);
     }
 
     @Override
-    public ReviewDTORequest updateReview(int review_id, ReviewDTO reviewDTO) {
-        Review review = reviewRepository.findById(review_id)
-                .orElseThrow(() -> new ResourceNotFoundException("Review not found with phone: " +  review_id));
+    public ReviewDTO updateReview(ReviewDTORequest reviewDTORequest) {
+        Review review = reviewRepository.findById(reviewDTORequest.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Review not found with phone: " +  reviewDTORequest.getId()));
 
-        review.setTitle(reviewDTO.getTitle());
-        review.setComment(reviewDTO.getComment());
-        review.setRating(reviewDTO.getRating());
+        review.setTitle(reviewDTORequest.getTitle());
+        review.setComment(reviewDTORequest.getComment());
+        review.setRating(reviewDTORequest.getRating());
 
         Review updatedReview = reviewRepository.save(review);
 
-        return  entityMapper.toReviewDTORequest(updatedReview);
+        return  entityMapper.toReviewDTO(updatedReview);
     }
 
     @Override

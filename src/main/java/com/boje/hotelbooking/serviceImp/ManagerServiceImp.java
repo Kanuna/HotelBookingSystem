@@ -24,23 +24,23 @@ public class ManagerServiceImp implements ManagerService {
 
 
     @Override
-    public ManagerDTORequest createManager(ManagerDTORequest managerDTORequest) {
-        Manager manager = entityMapper.toManager(managerDTORequest);
+    public ManagerDTORequest createManager(ManagerDTO managerDTO) {
+        Manager manager = entityMapper.toManager(managerDTO);
         Manager createdManager = managerRepository.save(manager);
 
         return entityMapper.toManagerDTORequest(createdManager);
     }
 
     @Override
-    public ManagerDTORequest updateManager(int manager_id,ManagerDTO managerDTO) {
-        Manager manager = managerRepository.findById(manager_id)
-                .orElseThrow(() -> new ResourceNotFoundException("Manager not found with id: " + manager_id));
+    public ManagerDTO updateManager(ManagerDTORequest managerDTORequest) {
+        Manager manager = managerRepository.findById(managerDTORequest.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Manager not found with id: " + managerDTORequest.getId()));
 
-        manager.setHotel(managerDTO.getHotel());
-        manager.setEmail(managerDTO.getEmail());
-        manager.setContactInfoHotel(managerDTO.getContactInfoHotel());
-        manager.setPhoneNumber(managerDTO.getPhoneNumber());
-        manager.setFullName(managerDTO.getFullName());
+        manager.setHotel(entityMapper.toHotel(managerDTORequest.getHotel()));
+        manager.setEmail(managerDTORequest.getEmail());
+        manager.setContactInfoHotel(entityMapper.toContactInfoHotel(managerDTORequest.getContactInfoHotel()));
+        manager.setPhoneNumber(managerDTORequest.getPhoneNumber());
+        manager.setFullName(managerDTORequest.getFullName());
 
         Manager updatedManager = managerRepository.save(manager);
 
@@ -61,7 +61,7 @@ public class ManagerServiceImp implements ManagerService {
         Manager manager = managerRepository.findManagerByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Manager not found with email: " +  email));
 
-        return entityMapper.toManagerDTORequest(manager);
+        return entityMapper.toManagerDTO(manager);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ManagerServiceImp implements ManagerService {
         Manager manager = managerRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("Manager not found with phoneNumber: " +  phoneNumber));
 
-        return entityMapper.toManagerDTORequest(manager);
+        return entityMapper.toManagerDTO(manager);
     }
 
     @Override

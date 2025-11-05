@@ -3,51 +3,115 @@ package com.boje.hotelbooking.mapper;
 import com.boje.hotelbooking.models.*;
 import com.boje.hotelbooking.dto.*;
 import com.boje.hotelbooking.dtoRequest.*;
+import jdk.jfr.Name;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Named;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface EntityMapper {
 
+    @Named("ToAddress")
     Address toAddress(AddressDTO addressDTO);
+    @Named("ToAddressDTO")
     AddressDTO toAddressDTO(Address address);
+    @Named("toAddressDTORequest")
     AddressDTORequest toAddressDTORequest(Address address);
 
+    @Named("toAmenity")
     Amenity toAmenity(AmenityDTO amenityDTO);
+    @Named("toAmenityDTO")
     AmenityDTO toAmenityDTO(Amenity amenity);
+    @Named("toAmenityDTORequest")
     AmenityDTORequest toAmenityDTORequest(Amenity amenity);
 
+
+    List<Amenity> toAmenityList(List<AmenityDTO> dtos);
+
+    List<AmenityDTO> toAmenityDTOList(List<Amenity> entities);
+
+
+    @Named("toBooking")
     Booking toBooking(BookingDTO bookingDTO);
+    @Named("toBookingDTO")
     BookingDTO toBookingDTO(Booking booking);
+    @Named("toBookingDTORequest")
     BookingDTORequest toBookingDTORequest(Booking booking);
 
-    ContactInfo toContactInfo(ContactInfoDTORequest contactInfoDTORequest);
+
+    List<Booking> toBookingList(List<BookingDTO> dtos);
+    List<BookingDTO> toBookingDTOList(List<Booking> entites);
+
+
+    @Named("toContactInfo")
+    ContactInfo toContactInfo(ContactInfoDTO contactInfoDTO);
+    @Named("toContactInfoDTO")
     ContactInfoDTO toContactInfoDTO(ContactInfo contactInfo);
+    @Named("toContactInfoDTORequest")
     ContactInfoDTORequest toContactInfoDTORequest(ContactInfo contactInfo);
 
+    @Named("toContactInfoHotel")
     ContactInfoHotel toContactInfoHotel(ContactInfoHotelDTO contactInfoHotelDTO);
+    @Named("toContactInfoHotelDTO")
     ContactInfoHotelDTO toContactInfoHotelDTO(ContactInfoHotel contactInfoHotel);
+    @Named("toContactInfoHotelDTORequest")
     ContactInfoHotelDTORequest toContactInfoHotelDTORequest(ContactInfoHotel contactInfoHotel);
 
+
+    @Named("toHotel")
     Hotel toHotel(HotelDTO hotelDTO);
+    @Named("toHotelDTO")
     HotelDTO toHotelDTO(Hotel hotel);
+    @Named("toHotelDTORequest")
     HotelDTORequest toHotelDTORequest(Hotel hotel);
 
+
+    List<Hotel> toHotelList(List<HotelDTO> dtos);
+    List<HotelDTO> toHotelDTOList(List<Hotel> entities);
+
+
+    @Named("toManager")
     Manager toManager(ManagerDTO managerDTO);
+    @Named("toManagerDTO")
     ManagerDTO toManagerDTO(Manager manager);
+    @Named("toManagerDTORequest")
     ManagerDTORequest toManagerDTORequest(Manager manager);
 
+
+    List<Manager> toManagerList(List<ManagerDTO> dtos);
+    List<ManagerDTO> toManagerDTOList(List<Manager> entities);
+
+
+    @Named("Reviews")
     Review toReview(ReviewDTO reviewDTO);
+    @Named("toReviewDTO")
     ReviewDTO toReviewDTO(Review review);
+    @Named("toReviewDTORequest")
     ReviewDTORequest toReviewDTORequest(Review review);
 
+    List<Review> toReviewList(List<ReviewDTO> dtos);
+    List<ReviewDTO> toReviewDTOList(List<Review> entities);
+
+
+    @Named("toRoom")
     Room toRoom(RoomDTO roomDTO);
+    @Named("toRoomDTO")
     RoomDTO toRoomDTO(Room room);
+    @Name("toRoomDTORequest")
     RoomDTORequest toRoomDTORequest(Room room);
 
-    User toUser(UserDTO userDTO);
-    UserDTO toUserDTO(User user);
-    UserDTORequest toUserDTORequest(User user);
+    List<Room> toRoomList(List<RoomDTO> dtos);
+    List<RoomDTO> toRoomDTOList(List<Room> entities);
 
+
+    @Named("toUser")
+    User toUser(UserDTO userDTO);
+    @Named("toUSerDTO")
+    UserDTO toUserDTO(User user);
+    @Named("toUserDTORequest")
+    UserDTORequest toUserDTORequest(User user);
 
 
     /*default Address toAddress(AddressDTO addressDTO){
@@ -56,7 +120,7 @@ public interface EntityMapper {
         address.setCity(addressDTO.getCity());
         address.setZipCode(addressDTO.getZipCode());
         address.setStreet(addressDTO.getStreet());
-        address.setHotel(addressDTO.getHotel());
+        address.setHotel(toHotel(addressDTO.getHotel()));
         return address;
     }
     default AddressDTO toAddressDTO(Address address){
@@ -65,7 +129,7 @@ public interface EntityMapper {
         addressDTO.setCity(address.getCity());
         addressDTO.setZipCode(address.getZipCode());
         addressDTO.setStreet(address.getStreet());
-        addressDTO.setHotel(address.getHotel());
+        addressDTO.setHotel(toHotelDTO(address.getHotel()));
         return addressDTO;
     }
     default AddressDTORequest toAddressDTORequest(Address address){
@@ -74,7 +138,7 @@ public interface EntityMapper {
         addressDTORequest.setCity(address.getCity());
         addressDTORequest.setZipCode(address.getZipCode());
         addressDTORequest.setStreet(address.getStreet());
-        addressDTORequest.setHotel(address.getHotel());
+        addressDTORequest.setHotel(toHotelDTO(address.getHotel()));
         return addressDTORequest;
     }
 
@@ -82,19 +146,19 @@ public interface EntityMapper {
     default Amenity toAmenity(AmenityDTO amenityDTO){
         Amenity amenity = new Amenity();
         amenity.setName(amenityDTO.getName());
-        amenity.setHotels(amenityDTO.getHotels());
+        amenity.setHotels(toHotelList(amenityDTO.getHotels()));
         return amenity;
     }
     default AmenityDTO toAmenityDTO(Amenity amenity){
         AmenityDTO amenityDTO = new AmenityDTO();
         amenityDTO.setName(amenity.getName());
-        amenityDTO.setHotels(amenity.getHotels());
+        amenityDTO.setHotels(toHotelDTOList(amenity.getHotels()));
         return amenityDTO;
     }
     default AmenityDTORequest toAmenityDTORequest(Amenity amenity){
         AmenityDTORequest amenityDTORequest = new AmenityDTORequest();
         amenityDTORequest.setName(amenity.getName());
-        amenityDTORequest.setHotels(amenity.getHotels());
+        amenityDTORequest.setHotels(toHotelDTOList(amenity.getHotels()));
         return amenityDTORequest;
     }
 
@@ -105,8 +169,8 @@ public interface EntityMapper {
         booking.setEndDate(bookingDTO.getEndDate());
         booking.setCreatedAt(bookingDTO.getCreatedAt());
         booking.setUpdatedAt(bookingDTO.getUpdatedAt());
-        booking.setUser(bookingDTO.getUser());
-        booking.setRoom(bookingDTO.getRoom());
+        booking.setUser(toUser(bookingDTO.getUser()));
+        booking.setRoom(toRoom(bookingDTO.getRoom()));
         return booking;
     }
     default BookingDTO toBookingDTO(Booking booking){
@@ -115,8 +179,8 @@ public interface EntityMapper {
         bookingDTO.setEndDate(booking.getEndDate());
         bookingDTO.setCreatedAt(booking.getCreatedAt());
         bookingDTO.setUpdatedAt(booking.getUpdatedAt());
-        bookingDTO.setUser(booking.getUser());
-        bookingDTO.setRoom(booking.getRoom());
+        bookingDTO.setUser(toUserDTO(booking.getUser()));
+        bookingDTO.setRoom(toRoomDTO(booking.getRoom()));
         return bookingDTO;
     }
 
@@ -126,28 +190,28 @@ public interface EntityMapper {
         bookingDTORequest.setEndDate(booking.getEndDate());
         bookingDTORequest.setCreatedAt(booking.getCreatedAt());
         bookingDTORequest.setUpdatedAt(booking.getUpdatedAt());
-        bookingDTORequest.setUser(booking.getUser());
-        bookingDTORequest.setRoom(booking.getRoom());
+        bookingDTORequest.setUser(toUserDTO(booking.getUser()));
+        bookingDTORequest.setRoom(toRoomDTO(booking.getRoom()));
         return bookingDTORequest;
     }
 
-    default ContactInfo toContactInfo(ContactInfoDTORequest contactInfoDTORequest){
+    default ContactInfo toContactInfo(ContactInfoDTO contactInfoDTO){
         ContactInfo contactInfo = new ContactInfo();
-        contactInfo.setUser(contactInfoDTORequest.getUser());
-        contactInfo.setEmail(contactInfoDTORequest.getEmail());
-        contactInfo.setPhoneNumber(contactInfoDTORequest.getPhone());
+        contactInfo.setUser(toUser(contactInfoDTO.getUser()));
+        contactInfo.setEmail(contactInfoDTO.getEmail());
+        contactInfo.setPhoneNumber(contactInfoDTO.getPhone());
         return contactInfo;
     }
     default ContactInfoDTO toContactInfoDTO(ContactInfo contactInfo){
         ContactInfoDTO contactInfoDTO = new ContactInfoDTORequest();
-        contactInfoDTO.setUser(contactInfo.getUser());
+        contactInfoDTO.setUser(toUserDTO(contactInfo.getUser()));
         contactInfoDTO.setEmail(contactInfo.getEmail());
         contactInfoDTO.setPhone(contactInfo.getPhoneNumber());
         return contactInfoDTO;
     }
     default ContactInfoDTORequest toContactInfoDTORequest(ContactInfo contactInfo){
         ContactInfoDTORequest contactInfoDTORequest = new ContactInfoDTORequest();
-        contactInfoDTORequest.setUser(contactInfo.getUser());
+        contactInfoDTORequest.setUser(toUserDTO(contactInfo.getUser()));
         contactInfoDTORequest.setEmail(contactInfo.getEmail());
         contactInfoDTORequest.setPhone(contactInfo.getPhoneNumber());
         return contactInfoDTORequest;
@@ -155,24 +219,24 @@ public interface EntityMapper {
 
     default ContactInfoHotel toContactInfoHotel(ContactInfoHotelDTO contactInfoHotelDTO){
         ContactInfoHotel contactInfoHotel = new ContactInfoHotel();
-        contactInfoHotel.setHotel(contactInfoHotelDTO.getHotel());
-        contactInfoHotel.setManagers(contactInfoHotelDTO.getManagers());
+        contactInfoHotel.setHotel(toHotel(contactInfoHotelDTO.getHotel()));
+        contactInfoHotel.setManagers(toManagerList(contactInfoHotelDTO.getManagers()));
         contactInfoHotel.setHotelEmail(contactInfoHotelDTO.getHotelEmail());
         contactInfoHotel.setHotelPhoneNumber(contactInfoHotelDTO.getHotelPhoneNumber());
         return contactInfoHotel;
     }
     default ContactInfoHotelDTO toContactInfoHotelDTO(ContactInfoHotel contactInfoHotel){
         ContactInfoHotelDTO contactInfoHotelDTO = new ContactInfoHotelDTO();
-        contactInfoHotelDTO.setHotel(contactInfoHotel.getHotel());
-        contactInfoHotelDTO.setManagers(contactInfoHotel.getManagers());
+        contactInfoHotelDTO.setHotel(toHotelDTORequest(contactInfoHotel.getHotel()));
+        contactInfoHotelDTO.setManagers(toManagerDTOList(contactInfoHotel.getManagers()));
         contactInfoHotelDTO.setHotelEmail(contactInfoHotel.getHotelEmail());
         contactInfoHotelDTO.setHotelPhoneNumber(contactInfoHotel.getHotelPhoneNumber());
         return  contactInfoHotelDTO;
     }
     default ContactInfoHotelDTORequest toContactInfoHotelDTORequest(ContactInfoHotel contactInfoHotel){
         ContactInfoHotelDTORequest contactInfoHotelDTORequest = new ContactInfoHotelDTORequest();
-        contactInfoHotelDTORequest.setHotel(contactInfoHotel.getHotel());
-        contactInfoHotelDTORequest.setManagers(contactInfoHotel.getManagers());
+        contactInfoHotelDTORequest.setHotel(toHotelDTORequest(contactInfoHotel.getHotel()));
+        contactInfoHotelDTORequest.setManagers(toManagerDTOList(contactInfoHotel.getManagers()));
         contactInfoHotelDTORequest.setHotelEmail(contactInfoHotel.getHotelEmail());
         contactInfoHotelDTORequest.setHotelPhoneNumber(contactInfoHotel.getHotelPhoneNumber());
         return contactInfoHotelDTORequest;
@@ -181,46 +245,46 @@ public interface EntityMapper {
     default Hotel toHotel(HotelDTO hotelDTO){
         Hotel hotel = new Hotel();
         hotel.setName(hotelDTO.getName());
-        hotel.setAddress(hotelDTO.getAddress());
+        hotel.setAddress(toAddress(hotelDTO.getAddress()));
         hotel.setDescription(hotelDTO.getDescription());
         hotel.setPolicies(hotelDTO.getPolicies());
-        hotel.setReviews(hotelDTO.getReviews());
+        hotel.setReviews(toReviewList(hotelDTO.getReviews()));
         hotel.setFranchise(hotelDTO.getFranchise());
-        hotel.setAmenities(hotelDTO.getAmenities());
+        hotel.setAmenities(toAmenityList(hotelDTO.getAmenities()));
         hotel.setStarRating(hotelDTO.getStarRating());
-        hotel.setManagers(hotelDTO.getManagers());
-        hotel.setContactInfoHotel(hotelDTO.getContactInfoHotel());
-        hotel.setRooms(hotelDTO.getRooms());
+        hotel.setManagers(toManagerList(hotelDTO.getManagers()));
+        hotel.setContactInfoHotel(toContactInfoHotel(hotelDTO.getContactInfoHotel()));
+        hotel.setRooms(toRoomList(hotelDTO.getRooms()));
         return hotel;
     }
     default HotelDTO toHotelDTO(Hotel hotel){
         HotelDTO hotelDTO = new HotelDTO();
         hotelDTO.setName(hotel.getName());
-        hotelDTO.setAddress(hotel.getAddress());
+        hotelDTO.setAddress(toAddressDTO(hotel.getAddress()));
         hotelDTO.setDescription(hotel.getDescription());
         hotelDTO.setPolicies(hotel.getPolicies());
-        hotelDTO.setReviews(hotel.getReviews());
+        hotelDTO.setReviews(toReviewDTOList(hotel.getReviews()));
         hotelDTO.setFranchise(hotel.getFranchise());
-        hotelDTO.setAmenities(hotel.getAmenities());
+        hotelDTO.setAmenities(toAmenityDTOList(hotel.getAmenities()));
         hotelDTO.setStarRating(hotel.getStarRating());
-        hotelDTO.setManagers(hotel.getManagers());
-        hotelDTO.setContactInfoHotel(hotel.getContactInfoHotel());
-        hotelDTO.setRooms(hotel.getRooms());
+        hotelDTO.setManagers(toManagerDTOList(hotel.getManagers()));
+        hotelDTO.setContactInfoHotel(toContactInfoHotelDTO(hotel.getContactInfoHotel()));
+        hotelDTO.setRooms(toRoomDTOList(hotel.getRooms()));
         return hotelDTO;
     }
     default HotelDTORequest toHotelDTORequest(Hotel hotel){
         HotelDTORequest hotelDTORequest = new HotelDTORequest();
         hotelDTORequest.setName(hotel.getName());
-        hotelDTORequest.setAddress(hotel.getAddress());
+        hotelDTORequest.setAddress(toAddressDTO(hotel.getAddress()));
         hotelDTORequest.setDescription(hotel.getDescription());
         hotelDTORequest.setPolicies(hotel.getPolicies());
-        hotelDTORequest.setReviews(hotel.getReviews());
+        hotelDTORequest.setReviews(toReviewDTOList(hotel.getReviews()));
         hotelDTORequest.setFranchise(hotel.getFranchise());
-        hotelDTORequest.setAmenities(hotel.getAmenities());
+        hotelDTORequest.setAmenities(toAmenityDTOList(hotel.getAmenities()));
         hotelDTORequest.setStarRating(hotel.getStarRating());
-        hotelDTORequest.setManagers(hotel.getManagers());
-        hotelDTORequest.setContactInfoHotel(hotel.getContactInfoHotel());
-        hotelDTORequest.setRooms(hotel.getRooms());
+        hotelDTORequest.setManagers(toManagerDTOList(hotel.getManagers()));
+        hotelDTORequest.setContactInfoHotel(toContactInfoHotelDTO(hotel.getContactInfoHotel()));
+        hotelDTORequest.setRooms(toRoomDTOList(hotel.getRooms()));
         return hotelDTORequest;
     }
 
@@ -229,8 +293,8 @@ public interface EntityMapper {
         manager.setFullName(managerDTO.getFullName());
         manager.setEmail(managerDTO.getEmail());
         manager.setPhoneNumber(managerDTO.getPhoneNumber());
-        manager.setContactInfoHotel(managerDTO.getContactInfoHotel());
-        manager.setHotel(managerDTO.getHotel());
+        manager.setContactInfoHotel(toContactInfoHotel(managerDTO.getContactInfoHotel()));
+        manager.setHotel(toHotel(managerDTO.getHotel()));
         return manager;
     }
     default ManagerDTO toManagerDTO(Manager manager){
@@ -238,8 +302,8 @@ public interface EntityMapper {
         managerDTO.setFullName(manager.getFullName());
         managerDTO.setEmail(manager.getEmail());
         managerDTO.setPhoneNumber(manager.getPhoneNumber());
-        managerDTO.setContactInfoHotel(manager.getContactInfoHotel());
-        managerDTO.setHotel(manager.getHotel());
+        managerDTO.setContactInfoHotel(toContactInfoHotelDTO(manager.getContactInfoHotel()));
+        managerDTO.setHotel(toHotelDTORequest(manager.getHotel()));
         return managerDTO;
     }
     default ManagerDTORequest toManagerDTORequest(Manager manager){
@@ -247,15 +311,15 @@ public interface EntityMapper {
         managerDTORequest.setFullName(manager.getFullName());
         managerDTORequest.setEmail(manager.getEmail());
         managerDTORequest.setPhoneNumber(manager.getPhoneNumber());
-        managerDTORequest.setContactInfoHotel(manager.getContactInfoHotel());
-        managerDTORequest.setHotel(manager.getHotel());
+        managerDTORequest.setContactInfoHotel(toContactInfoHotelDTO(manager.getContactInfoHotel()));
+        managerDTORequest.setHotel(toHotelDTORequest(manager.getHotel()));
         return managerDTORequest;
     }
 
     default Review toReview(ReviewDTO reviewDTO){
         Review review = new Review();
-        review.setUser(reviewDTO.getUser());
-        review.setHotel(reviewDTO.getHotel());
+        review.setUser(toUser(reviewDTO.getUser()));
+        review.setHotel(toHotel(reviewDTO.getHotel()));
         review.setTitle(reviewDTO.getTitle());
         review.setComment(reviewDTO.getComment());
         review.setRating(reviewDTO.getRating());
@@ -264,8 +328,8 @@ public interface EntityMapper {
     }
     default ReviewDTO toReviewDTO(Review review){
         ReviewDTO reviewDTO = new ReviewDTO();
-        reviewDTO.setUser(review.getUser());
-        reviewDTO.setHotel(review.getHotel());
+        reviewDTO.setUser(toUserDTO(review.getUser()));
+        reviewDTO.setHotel(toHotelDTORequest(review.getHotel()));
         reviewDTO.setTitle(review.getTitle());
         reviewDTO.setComment(review.getComment());
         reviewDTO.setRating(review.getRating());
@@ -274,8 +338,8 @@ public interface EntityMapper {
     }
     default ReviewDTORequest toReviewDTORequest(Review review){
         ReviewDTORequest reviewDTORequest = new ReviewDTORequest();
-        reviewDTORequest.setUser(review.getUser());
-        reviewDTORequest.setHotel(review.getHotel());
+        reviewDTORequest.setUser(toUserDTO(review.getUser()));
+        reviewDTORequest.setHotel(toHotelDTORequest(review.getHotel()));
         reviewDTORequest.setTitle(review.getTitle());
         reviewDTORequest.setComment(review.getComment());
         reviewDTORequest.setRating(review.getRating());
@@ -285,10 +349,10 @@ public interface EntityMapper {
 
     default Room toRoom(RoomDTO roomDTO){
         Room room = new Room();
-        room.setHotel(roomDTO.getHotel());
+        room.setHotel(toHotel(roomDTO.getHotel()));
         room.setRoomSize(roomDTO.getRoomSize());
         room.setPrice(roomDTO.getPrice());
-        room.setBookings(roomDTO.getBookings());
+        room.setBookings(toBookingList(roomDTO.getBookings()));
         room.setRoomNumber(roomDTO.getRoomNumber());
         room.setNumberOfBeds(roomDTO.getNumberOfBeds());
         room.setHasKitchen(roomDTO.isHasKitchen());
@@ -297,10 +361,10 @@ public interface EntityMapper {
     }
     default RoomDTO toRoomDTO(Room room){
         RoomDTO roomDTO = new RoomDTO();
-        roomDTO.setHotel(room.getHotel());
+        roomDTO.setHotel(toHotelDTO(room.getHotel()));
         roomDTO.setRoomSize(room.getRoomSize());
         roomDTO.setPrice(room.getPrice());
-        roomDTO.setBookings(room.getBookings());
+        roomDTO.setBookings(toBookingDTOList(room.getBookings()));
         roomDTO.setRoomNumber(room.getRoomNumber());
         roomDTO.setNumberOfBeds(room.getNumberOfBeds());
         roomDTO.setHasKitchen(room.isHasKitchen());
@@ -309,10 +373,10 @@ public interface EntityMapper {
     }
     default RoomDTORequest toRoomDTORequest(Room room){
         RoomDTORequest roomDTORequest = new RoomDTORequest();
-        roomDTORequest.setHotel(room.getHotel());
+        roomDTORequest.setHotel(toHotelDTORequest(room.getHotel()));
         roomDTORequest.setRoomSize(room.getRoomSize());
         roomDTORequest.setPrice(room.getPrice());
-        roomDTORequest.setBookings(room.getBookings());
+        roomDTORequest.setBookings(toBookingDTOList(room.getBookings()));
         roomDTORequest.setRoomNumber(room.getRoomNumber());
         roomDTORequest.setNumberOfBeds(room.getNumberOfBeds());
         roomDTORequest.setHasKitchen(room.isHasKitchen());
@@ -322,29 +386,29 @@ public interface EntityMapper {
 
     default User toUser(UserDTO userDTO){
         User user = new User();
-        user.setContactInfo(userDTO.getContactInfo());
+        user.setContactInfo(toContactInfo(userDTO.getContactInfo()));
         user.setPassword(userDTO.getPassword());
         user.setAge(userDTO.getAge());
         user.setFullName(userDTO.getFullName());
-        user.setBookings(userDTO.getBookings());
+        user.setBookings(toBookingList(userDTO.getBookings()));
         return user;
     }
     default UserDTO toUserDTO(User user){
         UserDTO userDTO = new UserDTO();
-        userDTO.setContactInfo(user.getContactInfo());
+        userDTO.setContactInfo(toContactInfoDTO(user.getContactInfo()));
         userDTO.setPassword(user.getPassword());
         userDTO.setAge(user.getAge());
         userDTO.setFullName(user.getFullName());
-        userDTO.setBookings(user.getBookings());
+        userDTO.setBookings(toBookingDTOList(user.getBookings()));
         return userDTO;
     }
     default UserDTORequest toUserDTORequest(User user){
         UserDTORequest userDTORequest = new UserDTORequest();
-        userDTORequest.setContactInfo(user.getContactInfo());
+        userDTORequest.setContactInfo(toContactInfoDTO(user.getContactInfo()));
         userDTORequest.setPassword(user.getPassword());
         userDTORequest.setAge(user.getAge());
         userDTORequest.setFullName(user.getFullName());
-        userDTORequest.setBookings(user.getBookings());
+        userDTORequest.setBookings(toBookingDTOList(user.getBookings()));
         return userDTORequest;
-    }*/
-}
+    }
+*/}

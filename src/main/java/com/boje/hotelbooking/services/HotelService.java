@@ -6,8 +6,8 @@ import com.boje.hotelbooking.dtoRequest.HotelDTORequest;
 import java.util.List;;
 
 public interface HotelService {
-    HotelDTORequest createHotel(HotelDTORequest hotelDTORequest);
-    HotelDTORequest updateHotel(int hotel_id, HotelDTO hotelDTO);
+    HotelDTORequest createHotel(HotelDTO  hotelDTO);
+    HotelDTO updateHotel(HotelDTORequest hotelDTORequest);
     void deleteHotel(int hotel_id);
     HotelDTO findByName(String hotelName);
 

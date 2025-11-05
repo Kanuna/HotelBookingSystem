@@ -6,8 +6,8 @@ import com.boje.hotelbooking.dto.BookingDTO;
 import java.util.List;
 
 public interface BookingService {
-    BookingDTORequest createBooking(BookingDTORequest bookingDTORequest);
-    BookingDTORequest updateBooking(int booking_id, BookingDTO bookingDTO);
+    BookingDTORequest createBooking(BookingDTO bookingDTO);
+    BookingDTO updateBooking(BookingDTORequest bookingDTORequest);
     void deleteBooking(int booking_id);
     List<BookingDTO> getByBookingsUser_Id(int user_id);
 }

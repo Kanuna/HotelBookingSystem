@@ -24,28 +24,28 @@ public class RoomServiceImp implements RoomService {
 
 
     @Override
-    public RoomDTORequest createRoom(RoomDTORequest roomDTORequest) {
-        Room room = entityMapper.toRoom(roomDTORequest);
+    public RoomDTORequest createRoom(RoomDTO roomDTO) {
+        Room room = entityMapper.toRoom(roomDTO);
         Room createdRoom =  roomRepository.save(room);
 
         return entityMapper.toRoomDTORequest(createdRoom);
     }
 
     @Override
-    public RoomDTORequest updateRoom(int room_id, RoomDTO roomDTO) {
-        Room room = roomRepository.findById(room_id)
-                .orElseThrow(() -> new ResourceNotFoundException("Room not found with id: " +  room_id));
+    public RoomDTO updateRoom(RoomDTORequest roomDTORequest) {
+        Room room = roomRepository.findById(roomDTORequest.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Room not found with id: " +  roomDTORequest.getId()));
 
-        room.setBookings(roomDTO.getBookings());
-        room.setHasKitchen(roomDTO.isHasKitchen());
-        room.setNumberOfBeds(roomDTO.getNumberOfBeds());
-        room.setPrice(roomDTO.getPrice());
-        room.setOccupied(roomDTO.getOccupied());
-        room.setRoomSize(roomDTO.getRoomSize());
+        room.setBookings(entityMapper.toBookingList(roomDTORequest.getBookings()));
+        room.setHasKitchen(roomDTORequest.isHasKitchen());
+        room.setNumberOfBeds(roomDTORequest.getNumberOfBeds());
+        room.setPrice(roomDTORequest.getPrice());
+        room.setOccupied(roomDTORequest.getOccupied());
+        room.setRoomSize(roomDTORequest.getRoomSize());
 
         Room updtedRoom = roomRepository.save(room);
 
-        return entityMapper.toRoomDTORequest(updtedRoom);
+        return entityMapper.toRoomDTO(updtedRoom);
     }
 
     @Override

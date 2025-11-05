@@ -28,10 +28,9 @@ public class RoomController {
         return ResponseEntity.created(location).body(createdRoom);
     }
 
-    @PutMapping("/{roomId}")
-    public ResponseEntity<RoomDTO> updateRoom(@PathVariable int roomId,
-                                              @RequestBody RoomDTO roomDTO) {
-        RoomDTO updatedRoom = roomServiceImp.updateRoom(roomId, roomDTO);
+    @PutMapping("/room")
+    public ResponseEntity<RoomDTO> updateRoom(@RequestBody RoomDTORequest roomDTORequest) {
+        RoomDTO updatedRoom = roomServiceImp.updateRoom(roomDTORequest);
         return ResponseEntity.ok(updatedRoom);
     }
 
