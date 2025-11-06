@@ -5,7 +5,11 @@ import com.boje.hotelbooking.dto.BookingDTO;
 import com.boje.hotelbooking.dtoRequest.BookingDTORequest;
 import com.boje.hotelbooking.mapper.EntityMapper;
 import com.boje.hotelbooking.models.Booking;
+import com.boje.hotelbooking.models.Room;
+import com.boje.hotelbooking.models.User;
 import com.boje.hotelbooking.repositories.BookingRepository;
+import com.boje.hotelbooking.repositories.RoomRepository;
+import com.boje.hotelbooking.repositories.UserRepository;
 import com.boje.hotelbooking.services.BookingService;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +19,17 @@ import java.util.stream.Collectors;
 @Service
 public class BookingServiceImp implements BookingService {
     private final BookingRepository bookingRepository;
+    private final RoomRepository roomRepository;
+    private final UserRepository  userRepository;
     private final EntityMapper entityMapper;
 
-    public BookingServiceImp(BookingRepository bookingRepository, EntityMapper entityMapper) {
+    public BookingServiceImp(BookingRepository bookingRepository,
+                             RoomRepository roomRepository,
+                             UserRepository userRepository,
+                             EntityMapper entityMapper) {
         this.bookingRepository = bookingRepository;
+        this.roomRepository = roomRepository;
+        this.userRepository = userRepository;
         this.entityMapper = entityMapper;
     }
 
@@ -35,9 +46,15 @@ public class BookingServiceImp implements BookingService {
         Booking booking = bookingRepository.findById(bookingDTORequest.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: "  + bookingDTORequest.getId()));
 
+        Room room = roomRepository.findById(bookingDTORequest.getRoom_id())
+                        .orElseThrow(() -> new ResourceNotFoundException("Room not found with id: " + bookingDTORequest.getRoom_id()));
+
+        User user = userRepository.findById(bookingDTORequest.getUser_id())
+                        .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + bookingDTORequest.getUser_id()));
+
         booking.setUpdatedAt(bookingDTORequest.getUpdatedAt());
-        booking.setRoom(entityMapper.toRoom(bookingDTORequest.getRoom()));
-        booking.setUser(entityMapper.toUser(bookingDTORequest.getUser()));
+        booking.setRoom(room);
+        booking.setUser(user);
         booking.setStartDate(bookingDTORequest.getStartDate());
         booking.setEndDate(bookingDTORequest.getEndDate());
 

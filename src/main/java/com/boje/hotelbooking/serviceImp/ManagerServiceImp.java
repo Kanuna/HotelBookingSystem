@@ -4,7 +4,11 @@ import com.boje.hotelbooking.ResourceNotFoundException.ResourceNotFoundException
 import com.boje.hotelbooking.dto.ManagerDTO;
 import com.boje.hotelbooking.dtoRequest.ManagerDTORequest;
 import com.boje.hotelbooking.mapper.EntityMapper;
+import com.boje.hotelbooking.models.ContactInfoHotel;
+import com.boje.hotelbooking.models.Hotel;
 import com.boje.hotelbooking.models.Manager;
+import com.boje.hotelbooking.repositories.ContactInfoHotelRepository;
+import com.boje.hotelbooking.repositories.HotelRepository;
 import com.boje.hotelbooking.repositories.ManagerRepository;
 import com.boje.hotelbooking.services.ManagerService;
 import org.springframework.stereotype.Service;
@@ -15,10 +19,17 @@ import java.util.stream.Collectors;
 @Service
 public class ManagerServiceImp implements ManagerService {
     private final ManagerRepository managerRepository;
+    private final HotelRepository hotelRepository;
+    private final ContactInfoHotelRepository contactInfoHotelRepository;
     private final EntityMapper entityMapper;
 
-    public  ManagerServiceImp(ManagerRepository managerRepository, EntityMapper entityMapper) {
+    public  ManagerServiceImp(ManagerRepository managerRepository,
+                              HotelRepository hotelRepository,
+                              ContactInfoHotelRepository contactInfoHotelRepository,
+                              EntityMapper entityMapper) {
         this.managerRepository = managerRepository;
+        this.hotelRepository = hotelRepository;
+        this.contactInfoHotelRepository = contactInfoHotelRepository;
         this.entityMapper = entityMapper;
     }
 
@@ -36,9 +47,15 @@ public class ManagerServiceImp implements ManagerService {
         Manager manager = managerRepository.findById(managerDTORequest.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Manager not found with id: " + managerDTORequest.getId()));
 
-        manager.setHotel(entityMapper.toHotel(managerDTORequest.getHotel()));
+        Hotel hotel = hotelRepository.findById(managerDTORequest.getHotel_id())
+                        .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id: " + managerDTORequest.getHotel_id()));
+
+        ContactInfoHotel contactInfoHotel = contactInfoHotelRepository.findById(managerDTORequest.getContactInfoHotel_id())
+                        .orElseThrow(() -> new ResourceNotFoundException("ContactInfoHotel not found with id: " + managerDTORequest.getContactInfoHotel_id()));
+
+        manager.setHotel(hotel);
         manager.setEmail(managerDTORequest.getEmail());
-        manager.setContactInfoHotel(entityMapper.toContactInfoHotel(managerDTORequest.getContactInfoHotel()));
+        manager.setContactInfoHotel(contactInfoHotel);
         manager.setPhoneNumber(managerDTORequest.getPhoneNumber());
         manager.setFullName(managerDTORequest.getFullName());
 

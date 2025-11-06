@@ -17,6 +17,6 @@ public class ReviewDTO {
     private double rating;
     private LocalDate createdAt;
 
-    private UserDTO user;
-    private HotelDTO hotel;
+    private Integer user_id;
+    private Integer hotel_id;
 }

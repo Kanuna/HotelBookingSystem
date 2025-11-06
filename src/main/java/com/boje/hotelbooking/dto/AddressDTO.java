@@ -16,5 +16,5 @@ public class AddressDTO {
     @NotBlank(message = "Street can't be blank.")
     private String street;
 
-    private HotelDTO hotel;
+    private Integer hotel_id;
 }

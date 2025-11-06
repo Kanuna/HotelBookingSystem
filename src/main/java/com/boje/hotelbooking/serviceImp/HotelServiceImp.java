@@ -7,12 +7,8 @@ import com.boje.hotelbooking.dto.HotelDTO;
 import com.boje.hotelbooking.dtoRequest.AmenityDTORequest;
 import com.boje.hotelbooking.dtoRequest.HotelDTORequest;
 import com.boje.hotelbooking.mapper.EntityMapper;
-import com.boje.hotelbooking.models.Address;
-import com.boje.hotelbooking.models.Amenity;
-import com.boje.hotelbooking.models.ContactInfoHotel;
-import com.boje.hotelbooking.models.Hotel;
-import com.boje.hotelbooking.repositories.AmenityRepository;
-import com.boje.hotelbooking.repositories.HotelRepository;
+import com.boje.hotelbooking.models.*;
+import com.boje.hotelbooking.repositories.*;
 import com.boje.hotelbooking.services.HotelService;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +19,28 @@ import java.util.stream.Collectors;
 public class HotelServiceImp implements HotelService {
     private final HotelRepository hotelRepository;
     private final AmenityRepository amenityRepository;
+    private final ContactInfoHotelRepository contactInfoHotelRepository;
+    private final ReviewRepository reviewRepository;
+    private final RoomRepository roomRepository;
+    private final AddressRepository addressRepository;
+    private final ManagerRepository  managerRepository;
     private final EntityMapper entityMapper;
 
     public HotelServiceImp(HotelRepository hotelRepository,
                            AmenityRepository amenityRepository,
+                           ContactInfoHotelRepository contactInfoHotelRepository,
+                           ReviewRepository reviewRepository,
+                           RoomRepository roomRepository,
+                           AddressRepository addressRepository,
+                           ManagerRepository  managerRepository,
                            EntityMapper entityMapper) {
         this.hotelRepository = hotelRepository;
         this.amenityRepository = amenityRepository;
+        this.contactInfoHotelRepository = contactInfoHotelRepository;
+        this.reviewRepository = reviewRepository;
+        this.roomRepository = roomRepository;
+        this.addressRepository = addressRepository;
+        this.managerRepository = managerRepository;
         this.entityMapper = entityMapper;
     }
 
@@ -50,6 +61,11 @@ public class HotelServiceImp implements HotelService {
         hotel.setContactInfoHotel(contactInfoHotel);
         contactInfoHotel.setHotel(hotel);
 
+        if (hotelDTO.getAmenity_ids() != null && !hotelDTO.getAmenity_ids().isEmpty()) {
+            List<Amenity> amenities = amenityRepository.findAllById(hotelDTO.getAmenity_ids());
+            hotel.setAmenities(amenities);
+        }
+
         Hotel createdHotel = hotelRepository.save(hotel);
 
         return entityMapper.toHotelDTORequest(createdHotel);
@@ -60,17 +76,48 @@ public class HotelServiceImp implements HotelService {
         Hotel hotel = hotelRepository.findById(hotelDTORequest.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id: " + hotelDTORequest.getId()));
 
-        hotel.setContactInfoHotel(entityMapper.toContactInfoHotel(hotelDTORequest.getContactInfoHotel()));
-        hotel.setAmenities(entityMapper.toAmenityList(hotelDTORequest.getAmenities()));
+        ContactInfoHotel contactInfoHotel = contactInfoHotelRepository.findById(hotelDTORequest.getContactInfoHotel_id())
+                        .orElseThrow(() -> new ResourceNotFoundException("ContactInfoHotel not found with id: " + hotelDTORequest.getContactInfoHotel_id()));
+
+        Address address = addressRepository.findById(hotelDTORequest.getAddress_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Address not found with id: " + hotelDTORequest.getAddress_id()));
+
+
+        //Amenities
+        if (hotelDTORequest.getAmenity_ids() != null && !hotelDTORequest.getAmenity_ids().isEmpty()) {
+            List<Amenity> amenities = amenityRepository.findAllById(hotelDTORequest.getAmenity_ids());
+            hotel.setAmenities(amenities);
+        }
+
+        //Reviews
+        if (hotelDTORequest.getReview_ids() != null) {
+            List<Review> reviews = reviewRepository.findAllById(hotelDTORequest.getReview_ids());
+            reviews.forEach(r -> r.setHotel(hotel));
+            hotel.setReviews(reviews);
+        }
+
+        //Rooms
+        if (hotelDTORequest.getRoom_ids() != null) {
+            List<Room> rooms = roomRepository.findAllById(hotelDTORequest.getRoom_ids());
+            rooms.forEach(r -> r.setHotel(hotel));
+            hotel.setRooms(rooms);
+        }
+
+        //Managers
+        if (hotelDTORequest.getManager_ids() != null) {
+            List<Manager> managers = managerRepository.findAllById(hotelDTORequest.getManager_ids());
+            managers.forEach(m -> m.setHotel(hotel));
+            hotel.setManagers(managers);
+        }
+
+
+        hotel.setContactInfoHotel(contactInfoHotel);
         hotel.setName(hotelDTORequest.getName());
         hotel.setDescription(hotelDTORequest.getDescription());
         hotel.setFranchise(hotelDTORequest.getFranchise());
         hotel.setPolicies(hotelDTORequest.getPolicies());
-        hotel.setReviews(entityMapper.toReviewList(hotelDTORequest.getReviews()));
-        hotel.setRooms(entityMapper.toRoomList(hotelDTORequest.getRooms()));
         hotel.setStarRating(hotelDTORequest.getStarRating());
-        hotel.setAddress(entityMapper.toAddress(hotelDTORequest.getAddress()));
-        hotel.setManagers(entityMapper.toManagerList(hotelDTORequest.getManagers()));
+        hotel.setAddress(address);
 
         Hotel updatedHotel =hotelRepository.save(hotel);
 

@@ -21,7 +21,6 @@ public class RoomDTO {
     private Room.Occupied occupied;
 
     @NotNull(message = "Room must belong to a hotel.")
-    private HotelDTO hotel;
-    private List<BookingDTO> bookings;
-
+    private Integer hotel_id;
+    private List<Integer> booking_ids;
 }

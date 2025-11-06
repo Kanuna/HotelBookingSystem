@@ -9,6 +9,6 @@ public class ManagerDTO {
     private String fullName;
     private String email;
     private String phoneNumber;
-    HotelDTO hotel;
-    private ContactInfoHotelDTO contactInfoHotel;
+    private Integer hotel_id;
+    private Integer contactInfoHotel_id;
 }

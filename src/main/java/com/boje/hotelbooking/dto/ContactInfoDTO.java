@@ -13,5 +13,5 @@ public class ContactInfoDTO {
     @NotBlank(message = "Phone number can't be blank")
     private String phone;
 
-    private UserDTO user;
+    private Integer user_id;
 }

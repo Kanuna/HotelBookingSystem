@@ -4,7 +4,9 @@ import com.boje.hotelbooking.ResourceNotFoundException.ResourceNotFoundException
 import com.boje.hotelbooking.dto.RoomDTO;
 import com.boje.hotelbooking.dtoRequest.RoomDTORequest;
 import com.boje.hotelbooking.mapper.EntityMapper;
+import com.boje.hotelbooking.models.Booking;
 import com.boje.hotelbooking.models.Room;
+import com.boje.hotelbooking.repositories.BookingRepository;
 import com.boje.hotelbooking.repositories.RoomRepository;
 import com.boje.hotelbooking.services.RoomService;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,14 @@ import java.util.stream.Collectors;
 @Service
 public class RoomServiceImp implements RoomService {
     private final RoomRepository roomRepository;
+    private final BookingRepository bookingRepository;
     private final EntityMapper entityMapper;
 
-    public RoomServiceImp(RoomRepository roomRepository, EntityMapper entityMapper) {
+    public RoomServiceImp(RoomRepository roomRepository,
+                          BookingRepository bookingRepository,
+                          EntityMapper entityMapper) {
         this.roomRepository = roomRepository;
+        this.bookingRepository = bookingRepository;
         this.entityMapper = entityMapper;
     }
 
@@ -36,7 +42,12 @@ public class RoomServiceImp implements RoomService {
         Room room = roomRepository.findById(roomDTORequest.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Room not found with id: " +  roomDTORequest.getId()));
 
-        room.setBookings(entityMapper.toBookingList(roomDTORequest.getBookings()));
+        if(roomDTORequest.getBooking_ids() != null) {
+            List<Booking> bookings = bookingRepository.findAllById(roomDTORequest.getBooking_ids());
+            bookings.forEach(b -> b.setRoom(room));
+            room.setBookings(bookings);
+        }
+
         room.setHasKitchen(roomDTORequest.isHasKitchen());
         room.setNumberOfBeds(roomDTORequest.getNumberOfBeds());
         room.setPrice(roomDTORequest.getPrice());
