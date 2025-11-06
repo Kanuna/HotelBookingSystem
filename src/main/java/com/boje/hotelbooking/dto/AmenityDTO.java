@@ -11,5 +11,5 @@ public class AmenityDTO {
     @NotBlank(message = "Amenity must have a name.")
     private String name;
 
-    private List<HotelDTO> hotels;
+    private List<Integer> hotel_ids;
 }

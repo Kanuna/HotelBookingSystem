@@ -5,17 +5,23 @@ import com.boje.hotelbooking.dto.ContactInfoDTO;
 import com.boje.hotelbooking.dtoRequest.ContactInfoDTORequest;
 import com.boje.hotelbooking.mapper.EntityMapper;
 import com.boje.hotelbooking.models.ContactInfo;
+import com.boje.hotelbooking.models.User;
 import com.boje.hotelbooking.repositories.ContactInfoRepository;
+import com.boje.hotelbooking.repositories.UserRepository;
 import com.boje.hotelbooking.services.ContactInfoService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ContactInfoServiceImp implements ContactInfoService {
     private final ContactInfoRepository contactInfoRepository;
+    private final UserRepository userRepository;
     private final EntityMapper entityMapper;
 
-    public  ContactInfoServiceImp(ContactInfoRepository contactInfoRepository, EntityMapper entityMapper) {
+    public  ContactInfoServiceImp(ContactInfoRepository contactInfoRepository,
+                                  UserRepository userRepository,
+                                  EntityMapper entityMapper) {
         this.contactInfoRepository = contactInfoRepository;
+        this.userRepository = userRepository;
         this.entityMapper = entityMapper;
     }
 
@@ -33,8 +39,12 @@ public class ContactInfoServiceImp implements ContactInfoService {
         ContactInfo contactInfo = contactInfoRepository.findById(contactInfoDTORequest.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("ContactInfo not found with id: " + contactInfoDTORequest.getId()));
 
+        User user = userRepository.findById(contactInfoDTORequest.getUser_id())
+                        .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + contactInfoDTORequest.getUser_id()));
+
+
         contactInfo.setEmail(contactInfoDTORequest.getEmail());
-        contactInfo.setUser(entityMapper.toUser(contactInfoDTORequest.getUser()));
+        contactInfo.setUser(user);
         contactInfo.setPhoneNumber(contactInfoDTORequest.getPhone());
 
         ContactInfo updatedContactInfo = contactInfoRepository.save(contactInfo);

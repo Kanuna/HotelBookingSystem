@@ -4,19 +4,31 @@ import com.boje.hotelbooking.ResourceNotFoundException.ResourceNotFoundException
 import com.boje.hotelbooking.dto.UserDTO;
 import com.boje.hotelbooking.dtoRequest.UserDTORequest;
 import com.boje.hotelbooking.mapper.EntityMapper;
+import com.boje.hotelbooking.models.Booking;
+import com.boje.hotelbooking.models.ContactInfo;
 import com.boje.hotelbooking.models.User;
+import com.boje.hotelbooking.repositories.BookingRepository;
+import com.boje.hotelbooking.repositories.ContactInfoRepository;
 import com.boje.hotelbooking.repositories.UserRepository;
 import com.boje.hotelbooking.services.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
+    private final BookingRepository bookingRepository;
+    private final ContactInfoRepository contactInfoRepository;
     private final EntityMapper entityMapper;
 
     public UserServiceImp(UserRepository userRepository,
+                          BookingRepository bookingRepository,
+                          ContactInfoRepository contactInfoRepository,
                           EntityMapper entityMapper) {
         this.userRepository = userRepository;
+        this.bookingRepository = bookingRepository;
+        this.contactInfoRepository = contactInfoRepository;
         this.entityMapper = entityMapper;
     }
 
@@ -37,8 +49,16 @@ public class UserServiceImp implements UserService {
         user.setPassword(userDTORequest.getPassword());
         user.setFullName(userDTORequest.getFullName());
 
-        user.setBookings(entityMapper.toBookingList(userDTORequest.getBookings()));
-        user.setContactInfo(entityMapper.toContactInfo(userDTORequest.getContactInfo()));
+        if(userDTORequest.getBooking_ids() != null) {
+            List<Booking> bookings = bookingRepository.findAllById(userDTORequest.getBooking_ids());
+            bookings.forEach(b -> b.setUser(user));
+            user.setBookings(bookings);
+        }
+
+        ContactInfo contactInfo = contactInfoRepository.findById(userDTORequest.getContactInfo_id())
+                        .orElseThrow(() -> new ResourceNotFoundException("Contact Info not found with id: " + userDTORequest.getContactInfo_id()));
+
+        user.setContactInfo(contactInfo);
 
         User updatedUser = userRepository.save(user);
         return entityMapper.toUserDTO(updatedUser);

@@ -11,6 +11,6 @@ public class ContactInfoHotelDTO {
     private String hotelEmail;
     private String hotelPhoneNumber;
 
-    private List<ManagerDTO> managers;
-    private HotelDTO hotel;
+    private List<Integer> manager_ids;
+    private Integer hotel_id;
 }

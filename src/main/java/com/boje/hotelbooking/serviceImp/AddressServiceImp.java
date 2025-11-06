@@ -46,11 +46,14 @@ public class AddressServiceImp implements AddressService {
         Address address = addressRepository.findById(addressDTORequest.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Address not found with id: " + addressDTORequest.getId()));
 
+        Hotel hotel = hotelRepository.findById(addressDTORequest.getHotel_id())
+                        .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id: " + addressDTORequest.getHotel_id()));
+
         address.setRegion(addressDTORequest.getRegion());
         address.setCity(addressDTORequest.getCity());
         address.setZipCode(addressDTORequest.getZipCode());
         address.setStreet(addressDTORequest.getStreet());
-        address.setHotel(entityMapper.toHotel(addressDTORequest.getHotel()));
+        address.setHotel(hotel);
 
         Address updatedAddress = addressRepository.save(address);
 

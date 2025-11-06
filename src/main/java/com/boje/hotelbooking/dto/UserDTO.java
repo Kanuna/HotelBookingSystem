@@ -14,6 +14,6 @@ public class UserDTO {
     @NotBlank(message = "User must have a password.")
     private String password;
 
-    private List<BookingDTO> bookings;
-    private ContactInfoDTO contactInfo;
+    private List<Integer> booking_ids;
+    private Integer contactInfo_id;
 }

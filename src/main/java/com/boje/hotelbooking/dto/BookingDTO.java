@@ -18,7 +18,7 @@ public class BookingDTO {
     private LocalDateTime updatedAt;
 
     @NotNull(message = "Booking must have a room.")
-    private RoomDTO room;
+    private Integer room_id;
     @NotNull(message = "Booking must have a user.")
-    private UserDTO user;
+    private Integer user_id;
 }

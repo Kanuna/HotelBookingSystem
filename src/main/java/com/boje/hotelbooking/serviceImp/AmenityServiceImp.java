@@ -5,17 +5,25 @@ import com.boje.hotelbooking.dto.AmenityDTO;
 import com.boje.hotelbooking.dtoRequest.AmenityDTORequest;
 import com.boje.hotelbooking.mapper.EntityMapper;
 import com.boje.hotelbooking.models.Amenity;
+import com.boje.hotelbooking.models.Hotel;
 import com.boje.hotelbooking.repositories.AmenityRepository;
+import com.boje.hotelbooking.repositories.HotelRepository;
 import com.boje.hotelbooking.services.AmenityService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AmenityServiceImp implements AmenityService {
     private final AmenityRepository amenityRepository;
+    private final HotelRepository  hotelRepository;
     private final EntityMapper entityMapper;
 
-    public AmenityServiceImp(AmenityRepository amenityRepository, EntityMapper entityMapper) {
+    public AmenityServiceImp(AmenityRepository amenityRepository,
+                             HotelRepository hotelRepository,
+                             EntityMapper entityMapper) {
         this.amenityRepository = amenityRepository;
+        this.hotelRepository = hotelRepository;
         this.entityMapper = entityMapper;
     }
 
@@ -32,12 +40,17 @@ public class AmenityServiceImp implements AmenityService {
         Amenity amenity = amenityRepository.findById(amenityDTORequest.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Amenity not found with id: " + amenityDTORequest.getId()));
 
-        amenity.setHotels(entityMapper.toHotelList(amenityDTORequest.getHotels()));
+        if (amenityDTORequest.getHotel_ids() != null) {
+            List<Hotel> hotels = hotelRepository.findAllById(amenityDTORequest.getHotel_ids());
+            hotels.forEach(h -> h.getAmenities().add(amenity));
+            amenity.setHotels(hotels);
+        }
+
         amenity.setName(amenityDTORequest.getName());
 
         Amenity savedAmenity = amenityRepository.save(amenity);
 
-        return entityMapper.toAmenityDTORequest(savedAmenity);
+        return entityMapper.toAmenityDTO(savedAmenity);
     }
 
     @Override

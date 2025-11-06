@@ -17,15 +17,15 @@ public class HotelDTO {
     private String franchise;
     private double starRating;
 
-    private AddressDTO address;
-    private ContactInfoHotelDTO contactInfoHotel;
+    private Integer address_id;
+    private Integer contactInfoHotel_id;
 
-    private List<RoomDTO> rooms;
+    private List<Integer> room_ids;
     private int vacantRoomsCount;
     private int totalRoomsCount;
 
-    private List<ReviewDTO> reviews;
+    private List<Integer> review_ids;
     private double averageRating;
-    private List<AmenityDTO> amenities;
-    private List<ManagerDTO> managers;
+    private List<Integer> amenity_ids;
+    private List<Integer> manager_ids;
 }
