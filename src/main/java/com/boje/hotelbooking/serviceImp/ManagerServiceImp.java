@@ -37,6 +37,13 @@ public class ManagerServiceImp implements ManagerService {
     @Override
     public ManagerDTORequest createManager(ManagerDTO managerDTO) {
         Manager manager = entityMapper.toManager(managerDTO);
+
+        if (managerDTO.getHotel_id() != null) {
+            Hotel hotel = hotelRepository.findById(managerDTO.getHotel_id())
+                    .orElseThrow(() -> new RuntimeException("Hotel not found with id: " + managerDTO.getHotel_id()));
+            manager.setHotel(hotel);
+        }
+
         Manager createdManager = managerRepository.save(manager);
 
         return entityMapper.toManagerDTORequest(createdManager);
@@ -50,12 +57,10 @@ public class ManagerServiceImp implements ManagerService {
         Hotel hotel = hotelRepository.findById(managerDTORequest.getHotel_id())
                         .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id: " + managerDTORequest.getHotel_id()));
 
-        ContactInfoHotel contactInfoHotel = contactInfoHotelRepository.findById(managerDTORequest.getContactInfoHotel_id())
-                        .orElseThrow(() -> new ResourceNotFoundException("ContactInfoHotel not found with id: " + managerDTORequest.getContactInfoHotel_id()));
 
         manager.setHotel(hotel);
         manager.setEmail(managerDTORequest.getEmail());
-        manager.setContactInfoHotel(contactInfoHotel);
+        //manager.setContactInfoHotel(contactInfoHotel);
         manager.setPhoneNumber(managerDTORequest.getPhoneNumber());
         manager.setFullName(managerDTORequest.getFullName());
 

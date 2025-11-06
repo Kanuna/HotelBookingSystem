@@ -13,6 +13,7 @@ import com.boje.hotelbooking.services.HotelService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,17 +50,21 @@ public class HotelServiceImp implements HotelService {
     public HotelDTORequest createHotel(HotelDTO hotelDTO) {
         Hotel hotel = entityMapper.toHotel(hotelDTO);
 
-        AddressDTO addressDTO = entityMapper.toAddressDTO(hotel.getAddress());
-        Address address = entityMapper.toAddress(addressDTO);
+        Address address = new Address();
+        address.setCity(hotelDTO.getAddress().getCity());
+        address.setRegion(hotelDTO.getAddress().getRegion());
+        address.setStreet(hotelDTO.getAddress().getStreet());
+        address.setZipCode(hotelDTO.getAddress().getZipCode());
 
-        hotel.setAddress(address);
         address.setHotel(hotel);
+        hotel.setAddress(address);
 
-        ContactInfoHotelDTO contactInfoHotelDTO = entityMapper.toContactInfoHotelDTO(hotel.getContactInfoHotel());
-        ContactInfoHotel contactInfoHotel = entityMapper.toContactInfoHotel(contactInfoHotelDTO);
+        ContactInfoHotel contactInfoHotel = new ContactInfoHotel();
+        contactInfoHotel.setHotelEmail(hotelDTO.getContactInfoHotel().getHotelEmail());
+        contactInfoHotel.setHotelPhoneNumber(hotelDTO.getContactInfoHotel().getHotelPhoneNumber());
 
-        hotel.setContactInfoHotel(contactInfoHotel);
         contactInfoHotel.setHotel(hotel);
+        hotel.setContactInfoHotel(contactInfoHotel);
 
         if (hotelDTO.getAmenity_ids() != null && !hotelDTO.getAmenity_ids().isEmpty()) {
             List<Amenity> amenities = amenityRepository.findAllById(hotelDTO.getAmenity_ids());
@@ -72,54 +77,55 @@ public class HotelServiceImp implements HotelService {
     }
 
     @Override
-    public HotelDTO updateHotel(HotelDTORequest hotelDTORequest) {
-        Hotel hotel = hotelRepository.findById(hotelDTORequest.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id: " + hotelDTORequest.getId()));
-
-        ContactInfoHotel contactInfoHotel = contactInfoHotelRepository.findById(hotelDTORequest.getContactInfoHotel_id())
-                        .orElseThrow(() -> new ResourceNotFoundException("ContactInfoHotel not found with id: " + hotelDTORequest.getContactInfoHotel_id()));
-
-        Address address = addressRepository.findById(hotelDTORequest.getAddress_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Address not found with id: " + hotelDTORequest.getAddress_id()));
+    public HotelDTO updateHotel(int hotel_id, HotelDTO hotelDTO) {
+        Hotel hotel = hotelRepository.findById(hotel_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id: " + hotel_id));
 
 
         //Amenities
-        if (hotelDTORequest.getAmenity_ids() != null && !hotelDTORequest.getAmenity_ids().isEmpty()) {
-            List<Amenity> amenities = amenityRepository.findAllById(hotelDTORequest.getAmenity_ids());
-            hotel.setAmenities(amenities);
+        if (hotelDTO.getAmenity_ids() != null && !hotelDTO.getAmenity_ids().isEmpty()) {
+            List<Amenity> amenities = amenityRepository.findAllById(hotelDTO.getAmenity_ids());
+            hotel.getAmenities().clear();
+            hotel.getAmenities().addAll(amenities);
         }
 
         //Reviews
-        if (hotelDTORequest.getReview_ids() != null) {
-            List<Review> reviews = reviewRepository.findAllById(hotelDTORequest.getReview_ids());
+        if (hotelDTO.getReview_ids() != null) {
+            List<Review> reviews = reviewRepository.findAllById(hotelDTO.getReview_ids());
             reviews.forEach(r -> r.setHotel(hotel));
-            hotel.setReviews(reviews);
+            hotel.getReviews().clear();
+            hotel.getReviews().addAll(reviews);
         }
 
         //Rooms
-        if (hotelDTORequest.getRoom_ids() != null) {
-            List<Room> rooms = roomRepository.findAllById(hotelDTORequest.getRoom_ids());
+        if (hotelDTO.getRoom_ids() != null) {
+            List<Room> rooms = roomRepository.findAllById(hotelDTO.getRoom_ids());
             rooms.forEach(r -> r.setHotel(hotel));
-            hotel.setRooms(rooms);
+            hotel.getRooms().clear();
+            hotel.getRooms().addAll(rooms);
         }
 
-        //Managers
-        if (hotelDTORequest.getManager_ids() != null) {
-            List<Manager> managers = managerRepository.findAllById(hotelDTORequest.getManager_ids());
-            managers.forEach(m -> m.setHotel(hotel));
-            hotel.setManagers(managers);
+        //ContactInfo
+        if (hotelDTO.getContactInfoHotel() != null) {
+            ContactInfoHotel contactInfoHotel = entityMapper.toContactInfoHotel(hotelDTO.getContactInfoHotel());
+            contactInfoHotel.setHotel(hotel);
+            hotel.setContactInfoHotel(contactInfoHotel);
         }
 
+        hotel.setName(hotelDTO.getName());
+        hotel.setDescription(hotelDTO.getDescription());
+        hotel.setFranchise(hotelDTO.getFranchise());
+        hotel.setPolicies(hotelDTO.getPolicies());
+        hotel.setStarRating(hotelDTO.getStarRating());
 
-        hotel.setContactInfoHotel(contactInfoHotel);
-        hotel.setName(hotelDTORequest.getName());
-        hotel.setDescription(hotelDTORequest.getDescription());
-        hotel.setFranchise(hotelDTORequest.getFranchise());
-        hotel.setPolicies(hotelDTORequest.getPolicies());
-        hotel.setStarRating(hotelDTORequest.getStarRating());
-        hotel.setAddress(address);
+        //Address
+        if (hotelDTO.getAddress() != null) {
+            Address address = entityMapper.toAddress(hotelDTO.getAddress());
+            address.setHotel(hotel);
+            hotel.setAddress(address);
+        }
 
-        Hotel updatedHotel =hotelRepository.save(hotel);
+        Hotel updatedHotel = hotelRepository.save(hotel);
 
         return  entityMapper.toHotelDTO(updatedHotel);
     }

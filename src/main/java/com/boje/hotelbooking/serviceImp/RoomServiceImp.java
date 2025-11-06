@@ -2,11 +2,13 @@ package com.boje.hotelbooking.serviceImp;
 
 import com.boje.hotelbooking.ResourceNotFoundException.ResourceNotFoundException;
 import com.boje.hotelbooking.dto.RoomDTO;
+import com.boje.hotelbooking.models.Hotel;
 import com.boje.hotelbooking.dtoRequest.RoomDTORequest;
 import com.boje.hotelbooking.mapper.EntityMapper;
 import com.boje.hotelbooking.models.Booking;
 import com.boje.hotelbooking.models.Room;
 import com.boje.hotelbooking.repositories.BookingRepository;
+import com.boje.hotelbooking.repositories.HotelRepository;
 import com.boje.hotelbooking.repositories.RoomRepository;
 import com.boje.hotelbooking.services.RoomService;
 import org.springframework.stereotype.Service;
@@ -18,13 +20,16 @@ import java.util.stream.Collectors;
 public class RoomServiceImp implements RoomService {
     private final RoomRepository roomRepository;
     private final BookingRepository bookingRepository;
+    private final HotelRepository hotelRepository;
     private final EntityMapper entityMapper;
 
     public RoomServiceImp(RoomRepository roomRepository,
                           BookingRepository bookingRepository,
+                          HotelRepository hotelRepository,
                           EntityMapper entityMapper) {
         this.roomRepository = roomRepository;
         this.bookingRepository = bookingRepository;
+        this.hotelRepository = hotelRepository;
         this.entityMapper = entityMapper;
     }
 
@@ -32,6 +37,13 @@ public class RoomServiceImp implements RoomService {
     @Override
     public RoomDTORequest createRoom(RoomDTO roomDTO) {
         Room room = entityMapper.toRoom(roomDTO);
+
+        if (roomDTO.getHotel_id() != null){
+           Hotel hotel = hotelRepository.findById(roomDTO.getHotel_id())
+                   .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id: " +  roomDTO.getHotel_id()));
+           room.setHotel(hotel);
+        }
+
         Room createdRoom =  roomRepository.save(room);
 
         return entityMapper.toRoomDTORequest(createdRoom);

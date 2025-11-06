@@ -1,6 +1,7 @@
 package com.boje.hotelbooking.services;
 
 import com.boje.hotelbooking.dto.UserDTO;
+import com.boje.hotelbooking.dto.UserResponseDTO;
 import com.boje.hotelbooking.dtoRequest.UserDTORequest;
 import org.springframework.data.jpa.repository.EntityGraph;
 
@@ -13,6 +14,6 @@ public interface UserService {
     UserDTO findByEmail(String email);
     UserDTO findByPhone(String phone);
 
-    @EntityGraph(attributePaths = {"bookings", "contactInfo"})
-    UserDTO findAllDataByUserId(int user_id);
+    @EntityGraph(attributePaths = {"bookings", "contactInfo", "reviews"})
+    UserResponseDTO findAllDataByUserId(int user_id);
 }

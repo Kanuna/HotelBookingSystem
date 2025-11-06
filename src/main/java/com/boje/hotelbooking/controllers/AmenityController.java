@@ -3,11 +3,15 @@ package com.boje.hotelbooking.controllers;
 import com.boje.hotelbooking.dto.AmenityDTO;
 import com.boje.hotelbooking.dtoRequest.AmenityDTORequest;
 import com.boje.hotelbooking.serviceImp.AmenityServiceImp;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+@PermitAll
+@EnableMethodSecurity
 @RestController
 @RequestMapping("/amenities")
 public class AmenityController {

@@ -3,12 +3,16 @@ package com.boje.hotelbooking.controllers;
 import com.boje.hotelbooking.dto.BookingDTO;
 import com.boje.hotelbooking.dtoRequest.BookingDTORequest;
 import com.boje.hotelbooking.serviceImp.BookingServiceImp;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
 
+@PermitAll
+@EnableMethodSecurity
 @RestController
 @RequestMapping("/bookings")
 public class BookingController {

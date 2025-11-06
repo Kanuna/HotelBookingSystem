@@ -11,4 +11,6 @@ public interface ReviewService {
 
     List<ReviewDTO> findByHotelId(int hotel_id);
     List<ReviewDTO> findByHotelIdAndRating(int hotel_id, double starRating);
+
+    List<ReviewDTO> findByUserId(int user_id);
 }

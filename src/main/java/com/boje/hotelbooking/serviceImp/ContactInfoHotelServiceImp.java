@@ -51,11 +51,11 @@ public class ContactInfoHotelServiceImp implements ContactInfoHotelService {
                         .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id: " + contactInfoHotelDTORequest.getHotel_id()));
 
         //Managers
-        if (contactInfoHotelDTORequest.getManager_ids() != null) {
+        /*if (contactInfoHotelDTORequest.getManager_ids() != null) {
             List<Manager> managers = managerRepository.findAllById(contactInfoHotelDTORequest.getManager_ids());
             managers.forEach(m -> m.setContactInfoHotel(contactInfoHotel));
             contactInfoHotel.setManagers(managers);
-        }
+        }*/
 
         contactInfoHotel.setHotel(hotel);
         contactInfoHotel.setHotelPhoneNumber(contactInfoHotelDTORequest.getHotelPhoneNumber());

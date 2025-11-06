@@ -2,6 +2,7 @@ package com.boje.hotelbooking.serviceImp;
 
 import com.boje.hotelbooking.ResourceNotFoundException.ResourceNotFoundException;
 import com.boje.hotelbooking.dto.UserDTO;
+import com.boje.hotelbooking.dto.UserResponseDTO;
 import com.boje.hotelbooking.dtoRequest.UserDTORequest;
 import com.boje.hotelbooking.mapper.EntityMapper;
 import com.boje.hotelbooking.models.Booking;
@@ -35,6 +36,14 @@ public class UserServiceImp implements UserService {
     @Override
     public UserDTORequest createUser(UserDTO userDTO) {
         User user = entityMapper.toUser(userDTO);
+
+        ContactInfo contactInfo = new ContactInfo();
+        contactInfo.setEmail(userDTO.getContactInfo().getEmail());
+        contactInfo.setPhoneNumber(userDTO.getContactInfo().getPhone());
+
+        contactInfo.setUser(user);
+        user.setContactInfo(contactInfo);
+
         User userSaved = userRepository.save(user);
 
         return entityMapper.toUserDTORequest(userSaved);
@@ -55,10 +64,7 @@ public class UserServiceImp implements UserService {
             user.setBookings(bookings);
         }
 
-        ContactInfo contactInfo = contactInfoRepository.findById(userDTORequest.getContactInfo_id())
-                        .orElseThrow(() -> new ResourceNotFoundException("Contact Info not found with id: " + userDTORequest.getContactInfo_id()));
-
-        user.setContactInfo(contactInfo);
+        user.setContactInfo(entityMapper.toContactInfo(userDTORequest.getContactInfo()));
 
         User updatedUser = userRepository.save(user);
         return entityMapper.toUserDTO(updatedUser);
@@ -90,10 +96,10 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDTO findAllDataByUserId(int user_id) {
+    public UserResponseDTO findAllDataByUserId(int user_id) {
         User user = userRepository.findAllDataById(user_id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + user_id));
 
-        return entityMapper.toUserDTORequest(user);
+        return entityMapper.toUserResponseDTO(user);
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Table(name = "manager")
+@Table(name = "managers")
 @Entity
 public class Manager {
     @Id
@@ -32,8 +32,4 @@ public class Manager {
     @ManyToOne
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
-
-    @ManyToOne
-    @JoinColumn(name = "contact_info_hotel_id", nullable = false)
-    private ContactInfoHotel contactInfoHotel;
 }

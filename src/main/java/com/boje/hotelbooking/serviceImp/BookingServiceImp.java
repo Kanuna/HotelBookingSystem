@@ -36,6 +36,20 @@ public class BookingServiceImp implements BookingService {
     @Override
     public BookingDTORequest createBooking(BookingDTO bookingDTO) {
         Booking booking = entityMapper.toBooking(bookingDTO);
+
+        if (bookingDTO.getRoom_id() != null) {
+             Room room = roomRepository.findById(bookingDTO.getRoom_id())
+                    .orElseThrow(() -> new RuntimeException("Room not found with id: " + bookingDTO.getRoom_id()));
+            booking.setRoom(room);
+        }
+
+        if (bookingDTO.getUser_id() != null) {
+            User user = userRepository.findById(bookingDTO.getUser_id())
+                    .orElseThrow(() -> new RuntimeException("User not found with id: " + bookingDTO.getUser_id()));
+            booking.setUser(user);
+        }
+
+
         Booking savedBooking = bookingRepository.save(booking);
 
         return entityMapper.toBookingDTORequest(savedBooking);

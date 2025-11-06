@@ -5,6 +5,7 @@ import com.boje.hotelbooking.dto.*;
 import com.boje.hotelbooking.dtoRequest.*;
 import jdk.jfr.Name;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import java.util.List;
@@ -80,8 +81,9 @@ public interface EntityMapper {
     List<Manager> toManagerList(List<ManagerDTO> dtos);
     List<ManagerDTO> toManagerDTOList(List<Manager> entities);
 
-
-    @Named("Reviews")
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "hotel", ignore = true)
+    @Named("toReview")
     Review toReview(ReviewDTO reviewDTO);
     @Named("toReviewDTO")
     ReviewDTO toReviewDTO(Review review);
@@ -109,6 +111,8 @@ public interface EntityMapper {
     UserDTO toUserDTO(User user);
     @Named("toUserDTORequest")
     UserDTORequest toUserDTORequest(User user);
+    @Named("toUserResponseDTO")
+    UserResponseDTO toUserResponseDTO(User user);
 
 
     /*default Address toAddress(AddressDTO addressDTO){

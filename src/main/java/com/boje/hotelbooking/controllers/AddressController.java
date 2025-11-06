@@ -3,11 +3,15 @@ package com.boje.hotelbooking.controllers;
 import com.boje.hotelbooking.dto.AddressDTO;
 import com.boje.hotelbooking.serviceImp.AddressServiceImp;
 import com.boje.hotelbooking.dtoRequest.AddressDTORequest;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+@PermitAll
+@EnableMethodSecurity
 @RestController
 @RequestMapping("/addresses")
 public class AddressController {

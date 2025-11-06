@@ -1,5 +1,6 @@
 package com.boje.hotelbooking.dto;
 
+import com.boje.hotelbooking.models.ContactInfoHotel;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +18,8 @@ public class HotelDTO {
     private String franchise;
     private double starRating;
 
-    private Integer address_id;
-    private Integer contactInfoHotel_id;
+    private AddressDTO address;
+    private ContactInfoHotelDTO contactInfoHotel;
 
     private List<Integer> room_ids;
     private int vacantRoomsCount;
@@ -27,5 +28,4 @@ public class HotelDTO {
     private List<Integer> review_ids;
     private double averageRating;
     private List<Integer> amenity_ids;
-    private List<Integer> manager_ids;
 }

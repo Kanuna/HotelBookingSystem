@@ -4,12 +4,16 @@ import com.boje.hotelbooking.dto.RoomDTO;
 import com.boje.hotelbooking.dtoRequest.RoomDTORequest;
 import com.boje.hotelbooking.models.Room;
 import com.boje.hotelbooking.serviceImp.RoomServiceImp;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
 
+@PermitAll
+@EnableMethodSecurity
 @RestController
 @RequestMapping("/rooms")
 public class RoomController {

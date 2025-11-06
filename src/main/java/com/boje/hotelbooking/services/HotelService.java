@@ -7,7 +7,7 @@ import java.util.List;;
 
 public interface HotelService {
     HotelDTORequest createHotel(HotelDTO  hotelDTO);
-    HotelDTO updateHotel(HotelDTORequest hotelDTORequest);
+    HotelDTO updateHotel(int hotel_id, HotelDTO hotelDTO);
     void deleteHotel(int hotel_id);
     HotelDTO findByName(String hotelName);
 
