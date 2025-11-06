@@ -4,12 +4,16 @@ import com.boje.hotelbooking.dto.HotelDTO;
 import com.boje.hotelbooking.dtoRequest.AmenityDTORequest;
 import com.boje.hotelbooking.dtoRequest.HotelDTORequest;
 import com.boje.hotelbooking.serviceImp.HotelServiceImp;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
 
+@PermitAll
+@EnableMethodSecurity
 @RestController
 @RequestMapping("/hotels")
 public class HotelController {
@@ -21,16 +25,16 @@ public class HotelController {
 
 
     @PostMapping("/hotel")
-    public ResponseEntity<HotelDTORequest> createHotel(HotelDTO hotelDTO){
+    public ResponseEntity<HotelDTORequest> createHotel(@RequestBody HotelDTO hotelDTO){
         HotelDTORequest createdHotel =  hotelServiceImp.createHotel(hotelDTO);
 
         URI location = URI.create(String.format("/hotels%d", createdHotel.getId()));
         return ResponseEntity.created(location).body(createdHotel);
     }
 
-    @PutMapping("/hotel")
-    public ResponseEntity<HotelDTO> updateHotel(@RequestBody HotelDTORequest hotelDTORequest){
-        HotelDTO updatedHotel  = hotelServiceImp.updateHotel(hotelDTORequest);
+    @PutMapping("/{hotel_id}")
+    public ResponseEntity<HotelDTO> updateHotel(@PathVariable int hotel_id,@RequestBody HotelDTORequest hotelDTORequest){
+        HotelDTO updatedHotel  = hotelServiceImp.updateHotel(hotel_id, hotelDTORequest);
         return ResponseEntity.ok(updatedHotel);
     }
 

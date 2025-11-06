@@ -10,5 +10,4 @@ public class ManagerDTO {
     private String email;
     private String phoneNumber;
     private Integer hotel_id;
-    private Integer contactInfoHotel_id;
 }

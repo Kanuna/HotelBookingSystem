@@ -29,6 +29,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
+
     @OneToOne(cascade =  CascadeType.ALL, optional = false, orphanRemoval = true)
     @JoinColumn(name = "contactInfo_id", nullable = false)
     private ContactInfo contactInfo;

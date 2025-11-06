@@ -3,11 +3,15 @@ package com.boje.hotelbooking.controllers;
 import com.boje.hotelbooking.dto.ContactInfoHotelDTO;
 import com.boje.hotelbooking.dtoRequest.ContactInfoHotelDTORequest;
 import com.boje.hotelbooking.serviceImp.ContactInfoHotelServiceImp;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+@PermitAll
+@EnableMethodSecurity
 @RestController
 @RequestMapping("/contact-info-hotels")
 public class ContactInfoHotelController {

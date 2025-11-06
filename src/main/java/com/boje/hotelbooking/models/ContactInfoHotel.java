@@ -26,8 +26,8 @@ public class ContactInfoHotel {
     private String hotelPhoneNumber;
 
 
-    @OneToMany(mappedBy = "contactInfoHotel", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Manager> managers;
+/*    @OneToMany(mappedBy = "contactInfoHotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Manager> managers;*/
 
     @OneToOne(mappedBy = "contactInfoHotel", cascade = CascadeType.ALL, orphanRemoval = true)
     private Hotel hotel;

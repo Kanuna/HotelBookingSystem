@@ -1,14 +1,20 @@
 package com.boje.hotelbooking.controllers;
 
+import com.boje.hotelbooking.dto.HotelDTO;
 import com.boje.hotelbooking.dto.ReviewDTO;
 import com.boje.hotelbooking.dtoRequest.ReviewDTORequest;
+import com.boje.hotelbooking.models.Review;
 import com.boje.hotelbooking.serviceImp.ReviewServiceImp;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
 
+@PermitAll
+@EnableMethodSecurity
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {
@@ -39,8 +45,8 @@ public class ReviewController {
     }
 
 
-    @GetMapping("/{hotelId}/reviews")
-    public ResponseEntity<List<ReviewDTO>> getReviews(
+    @GetMapping("/hotel/{hotelId}/reviews")
+    public ResponseEntity<List<ReviewDTO>> getReviewsByHotelAndRating(
             @PathVariable int hotelId,
             @RequestParam(required = false) Double starRating) {
 
@@ -51,5 +57,16 @@ public class ReviewController {
         return reviews.isEmpty()
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.ok(reviews);
+    }
+
+
+    @GetMapping("/user/{userId}/reviews")
+    public ResponseEntity<List<ReviewDTO>> getReviewsByUserId(
+            @PathVariable int userId) {
+        List<ReviewDTO> reviews = reviewServiceImp.findByUserId(userId);
+        return reviews.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(reviews);
+
     }
 }
