@@ -16,4 +16,5 @@ public interface UserService {
 
     @EntityGraph(attributePaths = {"bookings", "contactInfo", "reviews"})
     UserResponseDTO findAllDataByUserId(int user_id);
+    Boolean login(String email, String password);
 }
