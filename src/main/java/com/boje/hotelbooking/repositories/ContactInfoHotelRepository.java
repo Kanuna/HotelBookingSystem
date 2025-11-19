@@ -11,6 +11,4 @@ import java.util.Optional;
 @Repository
 public interface ContactInfoHotelRepository extends JpaRepository<ContactInfoHotel, Integer> {
     Optional<ContactInfoHotel> findByHotelId(int hotel_id);
-
-    List<ContactInfoHotel> hotel(Hotel hotel);
 }

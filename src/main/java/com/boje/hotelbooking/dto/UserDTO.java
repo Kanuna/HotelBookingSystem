@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class UserDTO {
-    private byte age;
+    private int age;
     @NotBlank(message = "User must have a name/full name.")
     private String fullName;
     @NotBlank(message = "User must have a password.")

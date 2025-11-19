@@ -43,11 +43,11 @@ public class Hotel {
     @JoinColumn(name = "contactInfoHotel_id", nullable = false)
     private ContactInfoHotel contactInfoHotel;
 
-    @OneToMany(cascade =  CascadeType.ALL)
+    @OneToMany(mappedBy = "hotel", cascade =  CascadeType.ALL)
     private List<Manager> managers;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Review> reviews = new ArrayList<>();
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

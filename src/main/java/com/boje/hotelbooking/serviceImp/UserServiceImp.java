@@ -1,6 +1,7 @@
 package com.boje.hotelbooking.serviceImp;
 
 import com.boje.hotelbooking.ResourceNotFoundException.ResourceNotFoundException;
+import com.boje.hotelbooking.dto.LoginRequestDTO;
 import com.boje.hotelbooking.dto.UserDTO;
 import com.boje.hotelbooking.dto.UserResponseDTO;
 import com.boje.hotelbooking.dtoRequest.UserDTORequest;
@@ -9,9 +10,10 @@ import com.boje.hotelbooking.models.Booking;
 import com.boje.hotelbooking.models.ContactInfo;
 import com.boje.hotelbooking.models.User;
 import com.boje.hotelbooking.repositories.BookingRepository;
-import com.boje.hotelbooking.repositories.ContactInfoRepository;
 import com.boje.hotelbooking.repositories.UserRepository;
 import com.boje.hotelbooking.services.UserService;
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,22 +22,24 @@ import java.util.List;
 public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
-    private final ContactInfoRepository contactInfoRepository;
     private final EntityMapper entityMapper;
 
     public UserServiceImp(UserRepository userRepository,
                           BookingRepository bookingRepository,
-                          ContactInfoRepository contactInfoRepository,
                           EntityMapper entityMapper) {
         this.userRepository = userRepository;
         this.bookingRepository = bookingRepository;
-        this.contactInfoRepository = contactInfoRepository;
         this.entityMapper = entityMapper;
     }
 
     @Override
     public UserDTORequest createUser(UserDTO userDTO) {
         User user = entityMapper.toUser(userDTO);
+
+        Argon2 argon = Argon2Factory.create();
+        String hashedPassword = argon.hash(3, 65536, 1, user.getPassword().toCharArray());
+
+        user.setPassword(hashedPassword);
 
         ContactInfo contactInfo = new ContactInfo();
         contactInfo.setEmail(userDTO.getContactInfo().getEmail());
@@ -95,11 +99,22 @@ public class UserServiceImp implements UserService {
         return   entityMapper.toUserDTORequest(user);
     }
 
+
     @Override
     public UserResponseDTO findAllDataByUserId(int user_id) {
         User user = userRepository.findAllDataById(user_id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + user_id));
 
         return entityMapper.toUserResponseDTO(user);
+    }
+
+    @Override
+    public Boolean login(LoginRequestDTO request) {
+        User user = userRepository.findByContactInfo_Email(request.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with given email " +  request.getEmail() ));
+
+        Argon2 argon = Argon2Factory.create();
+
+        return argon.verify(user.getPassword(), request.getPassword().toCharArray());
     }
 }

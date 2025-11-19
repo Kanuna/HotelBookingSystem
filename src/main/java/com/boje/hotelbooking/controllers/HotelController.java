@@ -32,6 +32,15 @@ public class HotelController {
         return ResponseEntity.created(location).body(createdHotel);
     }
 
+    @GetMapping("/hotels")
+    public ResponseEntity<List<HotelDTO>> getAllHotels() {
+        List<HotelDTO> hotels = hotelServiceImp.findAllHotels();
+
+        return hotels.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(hotels);
+    }
+
     @PutMapping("/{hotel_id}")
     public ResponseEntity<HotelDTO> updateHotel(@PathVariable int hotel_id,@RequestBody HotelDTORequest hotelDTORequest){
         HotelDTO updatedHotel  = hotelServiceImp.updateHotel(hotel_id, hotelDTORequest);

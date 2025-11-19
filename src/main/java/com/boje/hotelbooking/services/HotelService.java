@@ -10,6 +10,7 @@ public interface HotelService {
     HotelDTO updateHotel(int hotel_id, HotelDTO hotelDTO);
     void deleteHotel(int hotel_id);
     HotelDTO findByName(String hotelName);
+    List<HotelDTO> findAllHotels();
 
     List<HotelDTO> findByAddressZipCode(short zipCode);
     List<HotelDTO> findByAddressCity(String city);

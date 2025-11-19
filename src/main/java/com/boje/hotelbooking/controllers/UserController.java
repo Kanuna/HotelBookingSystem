@@ -1,12 +1,11 @@
 package com.boje.hotelbooking.controllers;
 
+import com.boje.hotelbooking.dto.LoginRequestDTO;
 import com.boje.hotelbooking.dto.UserDTO;
 import com.boje.hotelbooking.dto.UserResponseDTO;
 import com.boje.hotelbooking.dtoRequest.UserDTORequest;
 import com.boje.hotelbooking.serviceImp.UserServiceImp;
 import jakarta.annotation.security.PermitAll;
-import org.apache.coyote.Response;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
@@ -63,5 +62,11 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> getAllUserDataByUserId(@PathVariable int userId){
         UserResponseDTO user = userServiceImp.findAllDataByUserId(userId);
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Boolean> login(@RequestBody LoginRequestDTO request) {
+        boolean success = userServiceImp.login(request);
+        return ResponseEntity.ok(success);
     }
 }
