@@ -8,7 +8,7 @@ import java.util.List;
 @Setter
 public class UserResponseDTO {
     private int id;
-    private byte age;
+    private int age;
     private String fullName;
     private ContactInfoDTO contactInfo;
     private List<BookingDTO> bookings;

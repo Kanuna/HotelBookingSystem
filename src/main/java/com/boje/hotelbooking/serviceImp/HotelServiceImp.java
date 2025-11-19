@@ -148,6 +148,15 @@ public class HotelServiceImp implements HotelService {
     }
 
     @Override
+    public List<HotelDTO> findAllHotels() {
+        List<Hotel> hotels = hotelRepository.findAll();
+
+        return hotels.stream()
+                .map(entityMapper::toHotelDTORequest)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<HotelDTO> findByAddressZipCode(short zipCode) {
         List<Hotel> hotels = hotelRepository.findByAddress_ZipCode(zipCode)
                 .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with zipcode: " + zipCode));

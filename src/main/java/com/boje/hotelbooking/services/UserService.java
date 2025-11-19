@@ -1,5 +1,6 @@
 package com.boje.hotelbooking.services;
 
+import com.boje.hotelbooking.dto.LoginRequestDTO;
 import com.boje.hotelbooking.dto.UserDTO;
 import com.boje.hotelbooking.dto.UserResponseDTO;
 import com.boje.hotelbooking.dtoRequest.UserDTORequest;
@@ -16,5 +17,5 @@ public interface UserService {
 
     @EntityGraph(attributePaths = {"bookings", "contactInfo", "reviews"})
     UserResponseDTO findAllDataByUserId(int user_id);
-    Boolean login(String email, String password);
+    Boolean login(LoginRequestDTO request);
 }

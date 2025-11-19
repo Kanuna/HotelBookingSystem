@@ -49,7 +49,6 @@ public class BookingServiceImp implements BookingService {
             booking.setUser(user);
         }
 
-
         Booking savedBooking = bookingRepository.save(booking);
 
         return entityMapper.toBookingDTORequest(savedBooking);

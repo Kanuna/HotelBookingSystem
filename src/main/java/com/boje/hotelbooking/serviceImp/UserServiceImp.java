@@ -1,6 +1,7 @@
 package com.boje.hotelbooking.serviceImp;
 
 import com.boje.hotelbooking.ResourceNotFoundException.ResourceNotFoundException;
+import com.boje.hotelbooking.dto.LoginRequestDTO;
 import com.boje.hotelbooking.dto.UserDTO;
 import com.boje.hotelbooking.dto.UserResponseDTO;
 import com.boje.hotelbooking.dtoRequest.UserDTORequest;
@@ -11,7 +12,8 @@ import com.boje.hotelbooking.models.User;
 import com.boje.hotelbooking.repositories.BookingRepository;
 import com.boje.hotelbooking.repositories.UserRepository;
 import com.boje.hotelbooking.services.UserService;
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +23,6 @@ public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final EntityMapper entityMapper;
-    private final Argon2PasswordEncoder passwordEncoder;
 
     public UserServiceImp(UserRepository userRepository,
                           BookingRepository bookingRepository,
@@ -29,14 +30,15 @@ public class UserServiceImp implements UserService {
         this.userRepository = userRepository;
         this.bookingRepository = bookingRepository;
         this.entityMapper = entityMapper;
-        this.passwordEncoder = new Argon2PasswordEncoder(16, 32, 1, 65536, 3);
     }
 
     @Override
     public UserDTORequest createUser(UserDTO userDTO) {
         User user = entityMapper.toUser(userDTO);
 
-        String hashedPassword =  passwordEncoder.encode(user.getPassword());
+        Argon2 argon = Argon2Factory.create();
+        String hashedPassword = argon.hash(3, 65536, 1, user.getPassword().toCharArray());
+
         user.setPassword(hashedPassword);
 
         ContactInfo contactInfo = new ContactInfo();
@@ -107,9 +109,12 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Boolean login(String email, String password) {
-        return userRepository.findByContactInfo_Email(email)
-                .map(user -> passwordEncoder.matches(password, user.getPassword()))
-                .orElse(false);
+    public Boolean login(LoginRequestDTO request) {
+        User user = userRepository.findByContactInfo_Email(request.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with given email " +  request.getEmail() ));
+
+        Argon2 argon = Argon2Factory.create();
+
+        return argon.verify(user.getPassword(), request.getPassword().toCharArray());
     }
 }

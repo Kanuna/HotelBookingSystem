@@ -17,7 +17,7 @@ public class User {
     private int id;
 
     @Column(nullable = false)
-    private byte age;
+    private int age;
 
     @Column(nullable = false)
     private String fullName;
